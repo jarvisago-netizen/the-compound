@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Compound</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --amber:#d4a04a;--amber-light:#e8c278;--amber-glow:#d4a04a44;
+    --brown-dark:#1a1410;--brown-mid:#2a2118;--brown-card:#332a20;--brown-card-hover:#3d3228;
+    --warm-white:#f0e6d6;--warm-muted:#a89880;--warm-dim:#6b5e50;
+    --green:#5cb85c;--yellow:#e8c840;--grey:#666;
+    --red:#c45050;--blue:#5088c0;
+    --radius:12px;--shadow:0 2px 12px #0004;
+  }
+  html{font-size:15px}
+  body{
+    font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
+    background:var(--brown-dark);color:var(--warm-white);
+    min-height:100vh;overflow-x:hidden;
+  }
+  /* ── HEADER ── */
+  header{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 28px;background:var(--brown-mid);
+    border-bottom:1px solid #3a3028;position:sticky;top:0;z-index:100;
+  }
+  .logo{font-size:1.45rem;font-weight:800;letter-spacing:2px;color:var(--amber)}
+  .logo span{color:var(--warm-muted);font-weight:400;font-size:.85rem;letter-spacing:0;margin-left:6px}
+  .empire{display:flex;align-items:center;gap:14px}
+  .empire-badge{
+    background:linear-gradient(135deg,var(--amber),#b8862d);
+    color:var(--brown-dark);font-weight:700;font-size:.82rem;
+    padding:5px 14px;border-radius:20px;white-space:nowrap;
+  }
+  .xp-wrap{display:flex;align-items:center;gap:8px;min-width:200px}
+  .xp-bar-outer{
+    flex:1;height:14px;background:#1a1410;border-radius:8px;overflow:hidden;
+    border:1px solid #3a3028;position:relative;
+  }
+  .xp-bar-inner{
+    height:100%;background:linear-gradient(90deg,var(--amber),var(--amber-light));
+    border-radius:8px;transition:width .6s cubic-bezier(.22,1,.36,1);position:relative;
+  }
+  .xp-bar-inner.pulse{animation:pulse-glow .6s ease}
+  @keyframes pulse-glow{
+    0%,100%{box-shadow:none}
+    50%{box-shadow:0 0 18px var(--amber),inset 0 0 8px #fff4}
+  }
+  .xp-label{font-size:.75rem;color:var(--warm-muted);white-space:nowrap}
+  .clock{font-size:.92rem;color:var(--warm-muted);text-align:right;min-width:150px}
+  .clock-time{font-size:1.1rem;color:var(--warm-white);font-weight:600}
+
+  /* ── CELEBRATION ── */
+  .celebration{
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    display:flex;align-items:center;justify-content:center;
+    background:#0008;z-index:999;opacity:0;pointer-events:none;
+    transition:opacity .3s;
+  }
+  .celebration.show{opacity:1;pointer-events:auto}
+  .celebration-inner{
+    background:var(--brown-card);border:2px solid var(--amber);
+    border-radius:20px;padding:40px 60px;text-align:center;
+    transform:scale(.8);transition:transform .4s cubic-bezier(.22,1,.36,1);
+  }
+  .celebration.show .celebration-inner{transform:scale(1)}
+  .celebration-inner h2{font-size:2rem;color:var(--amber);margin-bottom:8px}
+  .celebration-inner p{color:var(--warm-muted);font-size:1.1rem}
+
+  /* ── FLASH ── */
+  .flash-overlay{
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:var(--amber);opacity:0;pointer-events:none;z-index:200;
+  }
+  .flash-overlay.flash{animation:flash-anim .35s ease}
+  @keyframes flash-anim{0%{opacity:.15}100%{opacity:0}}
+
+  /* ── MAIN ── */
+  .main{display:flex;gap:24px;padding:24px 28px}
+  .office{flex:0 0 60%}
+  .win-wall{flex:1;min-width:0}
+  .section-title{
+    font-size:1.05rem;font-weight:700;color:var(--amber);
+    margin-bottom:16px;letter-spacing:1px;text-transform:uppercase;
+    display:flex;align-items:center;gap:8px;
+  }
+  .section-title::after{content:'';flex:1;height:1px;background:#3a3028}
+
+  /* ── DESK CARDS ── */
+  .desk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .desk{
+    background:var(--brown-card);border-radius:var(--radius);padding:18px 20px;
+    border:1px solid #3a3028;transition:border-color .2s,transform .2s;
+  }
+  .desk:hover{border-color:var(--amber-glow);transform:translateY(-2px)}
+  .desk-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+  .desk-avatar{font-size:1.8rem;line-height:1}
+  .desk-info{flex:1}
+  .desk-name{font-weight:700;font-size:1rem}
+  .desk-role{font-size:.78rem;color:var(--warm-muted)}
+  .status-dot{
+    width:10px;height:10px;border-radius:50%;flex-shrink:0;
+    box-shadow:0 0 6px currentColor;
+  }
+  .status-dot.active{background:var(--green);color:var(--green)}
+  .status-dot.thinking{background:var(--yellow);color:var(--yellow)}
+  .status-dot.idle{background:var(--grey);color:var(--grey)}
+  .desk-task{font-size:.82rem;color:var(--warm-muted);margin-top:4px;font-style:italic}
+  .desk-counter{
+    font-size:.72rem;color:var(--warm-dim);margin-top:8px;
+    display:flex;align-items:center;gap:4px;
+  }
+
+  /* ── WIN WALL ── */
+  .wins{display:flex;flex-direction:column;gap:10px}
+  .win{
+    background:var(--brown-card);border-radius:var(--radius);padding:14px 16px;
+    border:1px solid #3a3028;display:flex;align-items:center;gap:12px;
+    transition:border-color .2s;
+  }
+  .win:hover{border-color:var(--amber-glow)}
+  .win-icon{font-size:1.4rem}
+  .win-text{flex:1}
+  .win-title{font-weight:600;font-size:.9rem}
+  .win-date{font-size:.72rem;color:var(--warm-dim)}
+
+  /* ── PIPELINE ── */
+  .pipeline{padding:0 28px 28px}
+  .pipeline-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .pipeline-col{
+    background:var(--brown-mid);border-radius:var(--radius);padding:16px;
+    min-height:180px;border:1px solid #3a3028;
+    transition:background .2s;
+  }
+  .pipeline-col.drag-over{background:#2e261c;border-color:var(--amber)}
+  .col-header{
+    font-size:.85rem;font-weight:700;color:var(--warm-muted);
+    text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .col-count{
+    background:var(--brown-card);color:var(--warm-dim);font-size:.7rem;
+    padding:2px 8px;border-radius:10px;
+  }
+  .task-list{display:flex;flex-direction:column;gap:10px;min-height:60px}
+
+  /* ── TASK CARDS ── */
+  .task-card{
+    background:var(--brown-card);border-radius:10px;padding:12px 14px;
+    border:1px solid #3a3028;cursor:grab;
+    transition:transform .15s,box-shadow .15s,opacity .15s;
+    user-select:none;
+  }
+  .task-card:hover{transform:translateY(-1px);box-shadow:var(--shadow)}
+  .task-card.dragging{opacity:.4;transform:scale(.96)}
+  .task-card-top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+  .priority{font-size:.9rem}
+  .task-title{font-weight:600;font-size:.85rem;flex:1}
+  .task-assignee{font-size:.75rem;color:var(--warm-dim)}
+
+  .done-flash{animation:card-done .5s ease}
+  @keyframes card-done{
+    0%{background:var(--brown-card)}
+    40%{background:#3d3520}
+    100%{background:var(--brown-card)}
+  }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:900px){
+    .main{flex-direction:column}
+    .office{flex:none}
+    .pipeline-cols{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">THE COMPOUND<span>Mission Control</span></div>
+  <div class="empire">
+    <div class="empire-badge" id="levelBadge">Empire Lv. 1</div>
+    <div class="xp-wrap">
+      <div class="xp-bar-outer"><div class="xp-bar-inner" id="xpBar" style="width:30%"></div></div>
+      <div class="xp-label" id="xpLabel">30 / 100 XP</div>
+    </div>
+  </div>
+  <div class="clock">
+    <div class="clock-time" id="clockTime"></div>
+    <div id="clockDate"></div>
+  </div>
+</header>
+
+<!-- FLASH OVERLAY -->
+<div class="flash-overlay" id="flashOverlay"></div>
+
+<!-- CELEBRATION -->
+<div class="celebration" id="celebration">
+  <div class="celebration-inner">
+    <h2 id="celebrationTitle">LEVEL UP!</h2>
+    <p id="celebrationText">Empire Level 2 unlocked</p>
+  </div>
+</div>
+
+<!-- MAIN AREA -->
+<div class="main">
+  <!-- Office Floor -->
+  <div class="office">
+    <div class="section-title">Office Floor</div>
+    <div class="desk-grid" id="deskGrid"></div>
+  </div>
+  <!-- Win Wall -->
+  <div class="win-wall">
+    <div class="section-title">Win Wall</div>
+    <div class="wins" id="winWall"></div>
+  </div>
+</div>
+
+<!-- Pipeline -->
+<div class="pipeline">
+  <div class="section-title">Task Pipeline</div>
+  <div class="pipeline-cols">
+    <div class="pipeline-col" id="col-progress" data-col="progress">
+      <div class="col-header">In Progress <span class="col-count" id="count-progress">0</span></div>
+      <div class="task-list" id="list-progress"></div>
+    </div>
+    <div class="pipeline-col" id="col-next" data-col="next">
+      <div class="col-header">Up Next <span class="col-count" id="count-next">0</span></div>
+      <div class="task-list" id="list-next"></div>
+    </div>
+    <div class="pipeline-col" id="col-done" data-col="done">
+      <div class="col-header">Done <span class="col-count" id="count-done">0</span></div>
+      <div class="task-list" id="list-done"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+const DEFAULT_STATE = {
+  level: 1, xp: 30,
+  agents: [
+    {id:'wan', name:'Wan', role:'Co-founder / Visionary', emoji:'🧠', status:'active', task:'Charting the empire', done:0},
+    {id:'jarvis', name:'Jarvis', role:'Co-founder / AI Partner', emoji:'🌀', status:'active', task:'Building The Compound', done:0},
+  ],
+  wins: [
+    {title:'Built The Compound', icon:'🏭', date:'Mar 23'},
+    {title:'Removed @ mention requirement', icon:'🎤', date:'Mar 23'},
+    {title:'Connected Discord', icon:'🔗', date:'Mar 23'},
+    {title:'Got Jarvis online', icon:'🚀', date:'Mar 20'},
+  ],
+  tasks: {
+    progress: [
+      {id:'t1', title:'Build The Compound', priority:'urgent', assignee:'🌀'},
+      {id:'t2', title:'Define core business direction', priority:'normal', assignee:'🧠🌀'},
+    ],
+    next: [
+      {id:'t3', title:'Set up agent automation workflows', priority:'normal', assignee:'🌀'},
+      {id:'t4', title:'Research market opportunities', priority:'low', assignee:'🧠'},
+    ],
+    done: [
+      {id:'t5', title:'Get Jarvis online', priority:'normal', assignee:'🌀'},
+      {id:'t6', title:'Connect Discord', priority:'normal', assignee:'🧠🌀'},
+      {id:'t7', title:'Remove @ mention requirement', priority:'normal', assignee:'🧠'},
+    ],
+  }
+};
+
+function loadState() {
+  try {
+    const s = localStorage.getItem('compound_state');
+    if (s) return JSON.parse(s);
+  } catch(e) {}
+  return JSON.parse(JSON.stringify(DEFAULT_STATE));
+}
+function saveState() { localStorage.setItem('compound_state', JSON.stringify(state)); }
+
+let state = loadState();
+
+// ── CLOCK ──
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clockTime').textContent = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  document.getElementById('clockDate').textContent = now.toLocaleDateString([], {weekday:'long', month:'short', day:'numeric', year:'numeric'});
+}
+updateClock(); setInterval(updateClock, 1000);
+
+// ── XP / LEVEL ──
+function updateXP() {
+  document.getElementById('levelBadge').textContent = `Empire Lv. ${state.level}`;
+  document.getElementById('xpBar').style.width = state.xp + '%';
+  document.getElementById('xpLabel').textContent = `${state.xp} / 100 XP`;
+}
+function addXP(amount) {
+  state.xp += amount;
+  const bar = document.getElementById('xpBar');
+  bar.classList.remove('pulse');
+  void bar.offsetWidth;
+  bar.classList.add('pulse');
+
+  if (state.xp >= 100) {
+    state.level++;
+    state.xp -= 100;
+    updateXP();
+    showCelebration();
+  } else {
+    updateXP();
+  }
+  saveState();
+}
+
+function showCelebration() {
+  const el = document.getElementById('celebration');
+  document.getElementById('celebrationText').textContent = `Empire Level ${state.level} unlocked`;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+function showFlash() {
+  const el = document.getElementById('flashOverlay');
+  el.classList.remove('flash');
+  void el.offsetWidth;
+  el.classList.add('flash');
+}
+
+// ── DESKS ──
+function renderDesks() {
+  const grid = document.getElementById('deskGrid');
+  grid.innerHTML = state.agents.map(a => `
+    <div class="desk">
+      <div class="desk-top">
+        <div class="desk-avatar">${a.emoji}</div>
+        <div class="desk-info">
+          <div class="desk-name">${a.name}</div>
+          <div class="desk-role">${a.role}</div>
+        </div>
+        <div class="status-dot ${a.status}" title="${a.status}"></div>
+      </div>
+      <div class="desk-task">"${a.task}"</div>
+      <div class="desk-counter">✅ ${a.done} tasks completed</div>
+    </div>
+  `).join('');
+}
+
+// ── WIN WALL ──
+function renderWins() {
+  document.getElementById('winWall').innerHTML = state.wins.map(w => `
+    <div class="win">
+      <div class="win-icon">${w.icon}</div>
+      <div class="win-text">
+        <div class="win-title">${w.title}</div>
+        <div class="win-date">${w.date}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ── PIPELINE ──
+const PRIORITY_ICONS = {urgent:'💎', normal:'⭐', low:'🔵'};
+let draggedId = null;
+let draggedSourceCol = null;
+
+function renderPipeline() {
+  ['progress','next','done'].forEach(col => {
+    const list = document.getElementById('list-' + col);
+    list.innerHTML = state.tasks[col].map(t => `
+      <div class="task-card" draggable="true" data-id="${t.id}" data-col="${col}">
+        <div class="task-card-top">
+          <span class="priority" title="${t.priority}">${PRIORITY_ICONS[t.priority]}</span>
+          <span class="task-title">${t.title}</span>
+        </div>
+        <div class="task-assignee">${t.assignee}</div>
+      </div>
+    `).join('');
+    document.getElementById('count-' + col).textContent = state.tasks[col].length;
+  });
+  bindDrag();
+}
+
+function bindDrag() {
+  document.querySelectorAll('.task-card').forEach(card => {
+    card.addEventListener('dragstart', e => {
+      draggedId = card.dataset.id;
+      draggedSourceCol = card.dataset.col;
+      card.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.classList.remove('dragging');
+      draggedId = null;
+      draggedSourceCol = null;
+      document.querySelectorAll('.pipeline-col').forEach(c => c.classList.remove('drag-over'));
+    });
+  });
+
+  document.querySelectorAll('.pipeline-col').forEach(col => {
+    col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
+    col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
+    col.addEventListener('drop', e => {
+      e.preventDefault();
+      col.classList.remove('drag-over');
+      const targetCol = col.dataset.col;
+      if (!draggedId || targetCol === draggedSourceCol) return;
+
+      // Move task
+      const idx = state.tasks[draggedSourceCol].findIndex(t => t.id === draggedId);
+      if (idx === -1) return;
+      const [task] = state.tasks[draggedSourceCol].splice(idx, 1);
+      state.tasks[targetCol].push(task);
+
+      // If moved to done
+      if (targetCol === 'done' && draggedSourceCol !== 'done') {
+        addXP(10);
+        showFlash();
+        // Add win
+        const now = new Date();
+        const dateStr = now.toLocaleDateString([], {month:'short', day:'numeric'});
+        state.wins.unshift({title: task.title, icon:'🏆', date: dateStr});
+        renderWins();
+      }
+
+      saveState();
+      renderPipeline();
+    });
+  });
+}
+
+// ── INIT ──
+updateXP();
+renderDesks();
+renderWins();
+renderPipeline();
+</script>
+</body>
+</html>
