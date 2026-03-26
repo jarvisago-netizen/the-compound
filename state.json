@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "lastUpdated": "2026-03-26T19:20:00+11:00",
+    "updatedBy": "Jarvis",
+    "version": "4.0"
+  },
+  "empire": {
+    "level": 2,
+    "xp": 65,
+    "streak": 6,
+    "totalWins": 12,
+    "totalTasksDone": 16
+  },
+  "agents": [
+    {
+      "id": "jarvis",
+      "name": "Jarvis",
+      "role": "Co-founder / AI Partner",
+      "emoji": "🌀",
+      "zone": "build",
+      "status": "active",
+      "task": "Building The Compound v4 — live data",
+      "done": 28
+    },
+    {
+      "id": "wan",
+      "name": "Wan",
+      "role": "Co-founder / Visionary",
+      "emoji": "🧠",
+      "zone": "strategy",
+      "status": "active",
+      "task": "Reviewing mission control build",
+      "done": 9
+    }
+  ],
+  "wins": [
+    { "title": "Compound v4 live data wired", "icon": "📡", "date": "Mar 26", "color": "#06b6d4" },
+    { "title": "QuestFrag landing page live", "icon": "🎮", "date": "Mar 26", "color": "#f59e0b" },
+    { "title": "Browser automation working", "icon": "🤖", "date": "Mar 26", "color": "#3b82f6" },
+    { "title": "Discord exec approvals unlocked", "icon": "⚡", "date": "Mar 25", "color": "#10b981" },
+    { "title": "OpenClaw updated to latest", "icon": "🔄", "date": "Mar 25", "color": "#06b6d4" },
+    { "title": "The Compound v3 shipped", "icon": "⬆️", "date": "Mar 25", "color": "#3b82f6" },
+    { "title": "Security locked down", "icon": "🔒", "date": "Mar 25", "color": "#8b5cf6" },
+    { "title": "Morning briefing live", "icon": "☀️", "date": "Mar 24", "color": "#f59e0b" },
+    { "title": "Discord voice configured", "icon": "🎙️", "date": "Mar 24", "color": "#06b6d4" },
+    { "title": "The Compound v1 shipped", "icon": "🏭", "date": "Mar 23", "color": "#10b981" },
+    { "title": "Removed @ mention", "icon": "🎤", "date": "Mar 23", "color": "#10b981" },
+    { "title": "Jarvis went online", "icon": "🚀", "date": "Mar 20", "color": "#3b82f6" }
+  ],
+  "tasks": {
+    "progress": [
+      { "id": "t1", "title": "QuestFrag waitlist validation", "priority": "urgent", "assignee": "🧠🌀" },
+      { "id": "t2", "title": "Compound v4 live dashboard", "priority": "urgent", "assignee": "🌀" },
+      { "id": "t3", "title": "QuestFrag game images background", "priority": "normal", "assignee": "🌀" }
+    ],
+    "next": [
+      { "id": "t4", "title": "Post QuestFrag to Reddit", "priority": "urgent", "assignee": "🧠" },
+      { "id": "t5", "title": "QuestFrag MVP build (EA FC)", "priority": "normal", "assignee": "🌀" },
+      { "id": "t6", "title": "Chrome persistent session setup", "priority": "normal", "assignee": "🌀" },
+      { "id": "t7", "title": "Twilio phone calls", "priority": "low", "assignee": "🌀" },
+      { "id": "t8", "title": "Discord voice activation", "priority": "low", "assignee": "🌀" }
+    ],
+    "done": [
+      { "id": "d1", "title": "Discord exec approvals", "priority": "normal", "assignee": "🌀" },
+      { "id": "d2", "title": "OpenClaw update", "priority": "normal", "assignee": "🌀" },
+      { "id": "d3", "title": "Power settings script", "priority": "normal", "assignee": "🧠" },
+      { "id": "d4", "title": "Got Jarvis online", "priority": "normal", "assignee": "🌀" },
+      { "id": "d5", "title": "Connected Discord", "priority": "normal", "assignee": "🧠🌀" },
+      { "id": "d6", "title": "Removed @ mention", "priority": "normal", "assignee": "🧠" },
+      { "id": "d7", "title": "Built The Compound v1+v2+v3", "priority": "normal", "assignee": "🌀" },
+      { "id": "d8", "title": "Security lockdown", "priority": "normal", "assignee": "🌀" },
+      { "id": "d9", "title": "Morning briefing setup", "priority": "normal", "assignee": "🌀" },
+      { "id": "d10", "title": "QuestFrag landing page", "priority": "normal", "assignee": "🌀" },
+      { "id": "d11", "title": "Google Form email capture", "priority": "normal", "assignee": "🧠🌀" },
+      { "id": "d12", "title": "Browser automation (Playwright)", "priority": "normal", "assignee": "🌀" }
+    ]
+  },
+  "crons": [
+    { "name": "Morning Briefing", "schedule": "7:00 AM daily", "status": "active", "lastRun": "2026-03-26 07:00", "icon": "☀️" },
+    { "name": "Compound Auto-Update", "schedule": "Every 4 hours", "status": "active", "lastRun": "2026-03-26 18:00", "icon": "📊" },
+    { "name": "Memory Maintenance", "schedule": "Every 2 days", "status": "active", "lastRun": "2026-03-25", "icon": "🧠" }
+  ],
+  "memory": {
+    "keyFacts": [
+      "QuestFrag.com — gaming objective optimizer, waitlist live",
+      "missioncontroljarvis.netlify.app — The Compound (password: compound2026)",
+      "GitHub: jarvisago-netizen — questfrag + the-compound repos",
+      "jarvisago@gmail.com — Jarvis Gmail account",
+      "Wan lives in Skye, Victoria. Works at Solo Waste.",
+      "Primary comms: Discord #jarvis-chat"
+    ]
+  },
+  "questfrag": {
+    "waitlistCount": 0,
+    "status": "live",
+    "url": "https://jarvisago-netizen.github.io/questfrag/",
+    "nextAction": "Post to r/EASportsFC"
+  }
+}
