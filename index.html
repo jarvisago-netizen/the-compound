@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Compound — Mission Control</title>
 <style>
+/* AUTH GATE */
+#auth-gate{position:fixed;inset:0;background:#070b14;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0}
+#auth-gate.hidden{display:none}
+.auth-box{background:#0d1321;border:1px solid #1e2d45;border-radius:20px;padding:40px 48px;text-align:center;max-width:360px;width:90%}
+.auth-logo{font-size:1.4rem;font-weight:800;letter-spacing:2px;margin-bottom:6px}
+.auth-logo span{color:#06b6d4;text-shadow:0 0 10px #06b6d4}
+.auth-sub{font-size:.78rem;color:#8b949e;margin-bottom:28px}
+.auth-input{width:100%;padding:13px 16px;background:#111827;border:1px solid #1e2d45;border-radius:10px;color:#f0f6fc;font-size:.95rem;outline:none;text-align:center;letter-spacing:3px;transition:border-color .2s;margin-bottom:12px}
+.auth-input:focus{border-color:#06b6d4}
+.auth-btn{width:100%;padding:13px;background:linear-gradient(135deg,#3b82f6,#06b6d4);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.95rem;cursor:pointer;transition:transform .15s}
+.auth-btn:hover{transform:translateY(-1px)}
+.auth-err{font-size:.75rem;color:#ef4444;margin-top:8px;min-height:18px}
+</style>
+<style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#070b14;--bg2:#0d1321;--card:#111827;--card2:#161f30;
@@ -177,6 +191,17 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 </head>
 <body>
 
+<!-- AUTH GATE -->
+<div id="auth-gate">
+  <div class="auth-box">
+    <div class="auth-logo">THE <span>COMPOUND</span></div>
+    <div class="auth-sub">Mission Control — Authorised Access Only</div>
+    <input class="auth-input" id="auth-input" type="password" placeholder="Enter access code" maxlength="32" autofocus>
+    <button class="auth-btn" id="auth-btn">Enter →</button>
+    <div class="auth-err" id="auth-err"></div>
+  </div>
+</div>
+
 <header>
   <div class="logo">THE <span>COMPOUND</span></div>
   <div class="xp-section">
@@ -238,6 +263,22 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 </div>
 
 <script>
+// AUTH
+(function(){
+  const CODE='compound2026';
+  const gate=document.getElementById('auth-gate');
+  const input=document.getElementById('auth-input');
+  const btn=document.getElementById('auth-btn');
+  const err=document.getElementById('auth-err');
+  if(sessionStorage.getItem('compound_auth')==='ok'){gate.classList.add('hidden');return;}
+  function tryAuth(){
+    if(input.value===CODE){sessionStorage.setItem('compound_auth','ok');gate.classList.add('hidden');}
+    else{err.textContent='Wrong code. Try again.';input.value='';input.focus();}
+  }
+  btn.addEventListener('click',tryAuth);
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')tryAuth();});
+})();
+
 const DEFAULT={
   level:2,xp:40,streak:6,
   agents:[
