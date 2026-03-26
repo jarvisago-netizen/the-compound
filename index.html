@@ -224,12 +224,16 @@ header::before{
 
 <script>
 const DEFAULT = {
-  level:1, xp:55,
+  level:2, xp:40,
   agents:[
-    {id:'jarvis',name:'Jarvis',role:'Co-founder / AI Partner',emoji:'🌀',status:'active',task:'Building The Compound v2',zone:'build',done:12},
-    {id:'wan',name:'Wan',role:'Co-founder / Visionary',emoji:'🧠',status:'active',task:'Charting the empire',zone:'strategy',done:3},
+    {id:'jarvis',name:'Jarvis',role:'Co-founder / AI Partner',emoji:'🌀',status:'active',task:'Installing Playwright browser automation',zone:'build',done:24},
+    {id:'wan',name:'Wan',role:'Co-founder / Visionary',emoji:'🧠',status:'active',task:'Validating QuestPath idea',zone:'strategy',done:8},
   ],
   wins:[
+    {title:'QuestPath landing page live',icon:'🎮',date:'Mar 26',color:'#f59e0b'},
+    {title:'Browser automation setup',icon:'🤖',date:'Mar 26',color:'#3b82f6'},
+    {title:'Discord exec approvals working',icon:'⚡',date:'Mar 25',color:'#10b981'},
+    {title:'OpenClaw updated to latest',icon:'🔄',date:'Mar 25',color:'#06b6d4'},
     {title:'Built The Compound v2',icon:'⬆️',date:'Mar 25',color:'#3b82f6'},
     {title:'Security lockdown',icon:'🔒',date:'Mar 25',color:'#8b5cf6'},
     {title:'Morning briefing set up',icon:'☀️',date:'Mar 24',color:'#f59e0b'},
@@ -241,23 +245,26 @@ const DEFAULT = {
   ],
   tasks:{
     progress:[
-      {id:'t1',title:'Compound v2 rebuild',priority:'urgent',assignee:'🌀'},
-      {id:'t2',title:'Gateway restart pending',priority:'normal',assignee:'🧠'},
-      {id:'t3',title:'Discord voice activation',priority:'normal',assignee:'🌀'},
+      {id:'t1',title:'QuestPath waitlist validation',priority:'urgent',assignee:'🧠🌀'},
+      {id:'t2',title:'Playwright browser automation',priority:'normal',assignee:'🌀'},
+      {id:'t3',title:'Formspree email capture setup',priority:'normal',assignee:'🌀'},
     ],
     next:[
-      {id:'t4',title:'Twilio phone calls',priority:'normal',assignee:'🌀'},
-      {id:'t5',title:'NemoClaw VPS setup',priority:'low',assignee:'🌀'},
-      {id:'t6',title:'Discord exec approvals',priority:'normal',assignee:'🌀'},
+      {id:'t4',title:'Post QuestPath to gaming communities',priority:'urgent',assignee:'🧠'},
+      {id:'t5',title:'QuestPath MVP build (EA FC first)',priority:'normal',assignee:'🌀'},
+      {id:'t6',title:'Twilio phone calls',priority:'low',assignee:'🌀'},
+      {id:'t7',title:'Discord voice activation',priority:'low',assignee:'🌀'},
     ],
     done:[
-      {id:'t7',title:'Power settings script',priority:'normal',assignee:'🧠'},
-      {id:'t8',title:'Get Jarvis online',priority:'normal',assignee:'🌀'},
-      {id:'t9',title:'Connect Discord',priority:'normal',assignee:'🧠🌀'},
-      {id:'t10',title:'Remove @ mention',priority:'normal',assignee:'🧠'},
-      {id:'t11',title:'Build The Compound v1',priority:'normal',assignee:'🌀'},
-      {id:'t12',title:'Security lockdown',priority:'normal',assignee:'🌀'},
-      {id:'t13',title:'Morning briefing',priority:'normal',assignee:'🌀'},
+      {id:'t8',title:'Discord exec approvals',priority:'normal',assignee:'🌀'},
+      {id:'t9',title:'OpenClaw update',priority:'normal',assignee:'🌀'},
+      {id:'t10',title:'Power settings script',priority:'normal',assignee:'🧠'},
+      {id:'t11',title:'Get Jarvis online',priority:'normal',assignee:'🌀'},
+      {id:'t12',title:'Connect Discord',priority:'normal',assignee:'🧠🌀'},
+      {id:'t13',title:'Remove @ mention',priority:'normal',assignee:'🧠'},
+      {id:'t14',title:'Build The Compound v1+v2',priority:'normal',assignee:'🌀'},
+      {id:'t15',title:'Security lockdown',priority:'normal',assignee:'🌀'},
+      {id:'t16',title:'Morning briefing',priority:'normal',assignee:'🌀'},
     ]
   }
 };
