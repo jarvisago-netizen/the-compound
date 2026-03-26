@@ -3,73 +3,148 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Compound â€” Mission Control</title>
-<style>
-/* AUTH GATE */
-#auth-gate{position:fixed;inset:0;background:#070b14;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0}
-#auth-gate.hidden{display:none}
-.auth-box{background:#0d1321;border:1px solid #1e2d45;border-radius:20px;padding:40px 48px;text-align:center;max-width:360px;width:90%}
-.auth-logo{font-size:1.4rem;font-weight:800;letter-spacing:2px;margin-bottom:6px}
-.auth-logo span{color:#06b6d4;text-shadow:0 0 10px #06b6d4}
-.auth-sub{font-size:.78rem;color:#8b949e;margin-bottom:28px}
-.auth-input{width:100%;padding:13px 16px;background:#111827;border:1px solid #1e2d45;border-radius:10px;color:#f0f6fc;font-size:.95rem;outline:none;text-align:center;letter-spacing:3px;transition:border-color .2s;margin-bottom:12px}
-.auth-input:focus{border-color:#06b6d4}
-.auth-btn{width:100%;padding:13px;background:linear-gradient(135deg,#3b82f6,#06b6d4);border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.95rem;cursor:pointer;transition:transform .15s}
-.auth-btn:hover{transform:translateY(-1px)}
-.auth-err{font-size:.75rem;color:#ef4444;margin-top:8px;min-height:18px}
-</style>
+<title>The Compound — Mission Control</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#070b14;--bg2:#0d1321;--card:#111827;--card2:#161f30;
+  --bg:#070b14;--bg2:#0d1321;--card:#111827;--card2:#0f1929;
   --blue:#3b82f6;--cyan:#06b6d4;--green:#10b981;--gold:#f59e0b;--purple:#8b5cf6;--red:#ef4444;
-  --text:#f0f6fc;--muted:#8b949e;--dim:#374151;
-  --border:#1e2d45;--radius:14px;
+  --text:#f0f6fc;--muted:#8b949e;--dim:#374151;--border:#1e2d45;--radius:14px;
 }
 body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-/* â”€â”€ HEADER â”€â”€ */
-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
-  position:sticky;top:0;z-index:100;overflow:hidden;
-}
+/* AUTH */
+#gate{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;align-items:center;justify-content:center}
+#gate.gone{display:none}
+.gate-box{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:40px 48px;text-align:center;max-width:360px;width:90%}
+.gate-logo{font-size:1.4rem;font-weight:800;letter-spacing:2px;margin-bottom:6px}
+.gate-logo span{color:var(--cyan);text-shadow:0 0 10px var(--cyan)}
+.gate-sub{font-size:.78rem;color:var(--muted);margin-bottom:24px}
+.gate-input{width:100%;padding:13px 16px;background:var(--card);border:1px solid var(--border);border-radius:10px;color:var(--text);font-size:.95rem;outline:none;text-align:center;letter-spacing:3px;margin-bottom:12px;transition:border-color .2s}
+.gate-input:focus{border-color:var(--cyan)}
+.gate-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),var(--cyan));border:none;border-radius:10px;color:#fff;font-weight:700;font-size:.95rem;cursor:pointer}
+.gate-err{font-size:.75rem;color:var(--red);margin-top:8px;min-height:18px}
+
+/* HEADER */
+header{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;background:var(--bg2);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;overflow:hidden}
 header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),transparent);animation:scan 4s linear infinite}
 @keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.logo{font-size:1.2rem;font-weight:800;letter-spacing:2px}
-.logo span{color:var(--cyan);text-shadow:0 0 10px var(--cyan)}
-
-/* XP BAR */
-.xp-section{display:flex;align-items:center;gap:12px;flex:1;max-width:400px;margin:0 24px}
-.level-pill{
-  background:linear-gradient(135deg,var(--gold),#d97706);color:#000;
-  font-weight:800;font-size:.72rem;padding:4px 12px;border-radius:20px;
-  white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;
-  box-shadow:0 0 14px #f59e0b40;animation:level-glow 3s ease-in-out infinite;
-}
-@keyframes level-glow{0%,100%{box-shadow:0 0 10px #f59e0b40}50%{box-shadow:0 0 24px #f59e0b80}}
-.xp-track{flex:1;height:10px;background:#0d1321;border-radius:6px;overflow:hidden;border:1px solid var(--border);position:relative}
+.logo{font-size:1.15rem;font-weight:800;letter-spacing:2px}
+.logo span{color:var(--cyan)}
+.header-center{display:flex;align-items:center;gap:10px;flex:1;max-width:380px;margin:0 20px}
+.lvl-badge{background:linear-gradient(135deg,var(--gold),#d97706);color:#000;font-weight:800;font-size:.7rem;padding:3px 12px;border-radius:20px;white-space:nowrap;box-shadow:0 0 12px #f59e0b40}
+.xp-track{flex:1;height:9px;background:#0d1321;border-radius:6px;overflow:hidden;border:1px solid var(--border)}
 .xp-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:6px;transition:width .8s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
-.xp-fill::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,#ffffff40,transparent);animation:xp-shine 2s ease-in-out infinite}
-@keyframes xp-shine{0%{left:-100%}100%{left:200%}}
-.xp-fill.pulse{animation:xp-pulse .5s ease}
-@keyframes xp-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 20px var(--cyan)}}
-.xp-num{font-size:.7rem;color:var(--muted);white-space:nowrap}
-.clock{text-align:right;font-size:.78rem;color:var(--muted)}
-.clock-time{font-size:.95rem;color:var(--text);font-weight:600}
+.xp-fill::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,#ffffff40,transparent);animation:shine 2.5s ease-in-out infinite}
+@keyframes shine{0%{left:-100%}100%{left:200%}}
+.xp-num{font-size:.68rem;color:var(--muted);white-space:nowrap}
+.header-right{display:flex;align-items:center;gap:16px}
+.live-badge{display:flex;align-items:center;gap:5px;font-size:.68rem;color:var(--green)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:live-pulse 2s ease-in-out infinite}
+@keyframes live-pulse{0%,100%{box-shadow:0 0 3px var(--green)}50%{box-shadow:0 0 10px var(--green),0 0 20px #10b98150}}
+.clock{text-align:right;font-size:.75rem;color:var(--muted)}
+.clock-time{font-size:.9rem;color:var(--text);font-weight:600}
+.last-update{font-size:.62rem;color:var(--dim)}
 
-/* â”€â”€ STREAK BANNER â”€â”€ */
-.streak-banner{
-  background:linear-gradient(135deg,#f59e0b18,#3b82f610);
-  border-bottom:1px solid #f59e0b20;
-  padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:20px;
-  font-size:.78rem;color:var(--muted);
-}
-.streak-stat{display:flex;align-items:center;gap:6px}
-.streak-stat strong{color:var(--text);font-size:.88rem}
-.streak-stat .icon{font-size:1rem}
+/* STATS BANNER */
+.stats-bar{display:flex;align-items:center;justify-content:center;gap:32px;padding:8px 24px;background:linear-gradient(135deg,#f59e0b08,#3b82f605);border-bottom:1px solid #f59e0b15;flex-wrap:wrap}
+.stat{display:flex;align-items:center;gap:6px;font-size:.78rem;color:var(--muted)}
+.stat strong{color:var(--text);font-size:.88rem}
+.stat-icon{font-size:.95rem}
 
-/* â”€â”€ CELEBRATION â”€â”€ */
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 1fr 300px;gap:16px;padding:16px 24px}
+
+/* OFFICE */
+.office{background:var(--bg2);border-radius:var(--radius);padding:16px;border:1px solid var(--border);background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:36px 36px;grid-column:1/2}
+.sec-title{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.sec-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.zones{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.zone{border:1px solid var(--border);border-radius:10px;padding:12px;background:#0a1020cc}
+.zone.build{border-color:#3b82f620}.zone.strategy{border-color:#10b98120}.zone.research{border-color:#8b5cf620}.zone.comms{border-color:#06b6d420}
+.zone-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:4px}
+.zone.build .zone-lbl{color:var(--blue)}.zone.strategy .zone-lbl{color:var(--green)}.zone.research .zone-lbl{color:var(--purple)}.zone.comms .zone-lbl{color:var(--cyan)}
+.zone-lbl::before{content:'';width:4px;height:4px;border-radius:50%;background:currentColor}
+.agent{background:var(--card);border-radius:9px;padding:12px;border:1px solid var(--border);transition:border-color .3s,box-shadow .3s}
+.agent.active{border-color:#3b82f630;animation:agent-glow 3s ease-in-out infinite}
+@keyframes agent-glow{0%,100%{box-shadow:0 0 6px #3b82f610}50%{box-shadow:0 0 16px #3b82f620}}
+.agent-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px}
+.avatar{font-size:1.6rem}
+.agent-info .name{font-weight:700;font-size:.85rem}
+.agent-info .role{font-size:.68rem;color:var(--muted)}
+.status-pill{display:inline-flex;align-items:center;gap:4px;margin-top:4px;font-size:.62rem;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:8px}
+.status-pill.active{background:#10b98115;color:var(--green)}
+.status-pill.idle{background:#37415115;color:var(--dim)}
+.spd{width:5px;height:5px;border-radius:50%;background:currentColor}
+.spd.active{animation:dot-pulse 2s ease-in-out infinite}
+@keyframes dot-pulse{0%,100%{box-shadow:0 0 3px currentColor}50%{box-shadow:0 0 8px currentColor}}
+.agent-task{font-size:.72rem;color:var(--muted);font-style:italic;margin-bottom:6px;display:flex;align-items:center;gap:4px}
+.blink{display:inline-block;width:2px;height:10px;background:var(--blue);animation:blink .8s step-end infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.act-bar{display:flex;gap:2px}
+.ab{flex:1;height:3px;border-radius:2px;background:var(--border)}
+.ab.on{background:var(--blue);opacity:.7}
+.ab.now{background:var(--cyan);animation:now-pulse 1.5s ease-in-out infinite}
+@keyframes now-pulse{0%,100%{opacity:.6}50%{opacity:1}}
+.done-ct{font-size:.62rem;color:var(--dim);margin-top:4px}
+
+/* PIPELINE */
+.pipeline-panel{grid-column:2/3}
+.pipeline-cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.pcol{background:var(--bg2);border-radius:12px;padding:12px;border:1px solid var(--border);border-top:3px solid transparent;min-height:120px;transition:background .2s,border-color .2s}
+.pcol[data-col=progress]{border-top-color:var(--blue)}
+.pcol[data-col=next]{border-top-color:var(--gold)}
+.pcol[data-col=done]{border-top-color:var(--green)}
+.pcol.drag-over{background:#1a2840;border-color:var(--blue)}
+.pcol-hdr{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.pcol-cnt{background:var(--card);color:var(--dim);font-size:.62rem;padding:1px 6px;border-radius:5px}
+.task-list{display:flex;flex-direction:column;gap:6px;min-height:30px}
+.task{background:var(--card);border-radius:8px;padding:9px 11px;border:1px solid var(--border);cursor:grab;transition:transform .15s,box-shadow .15s,opacity .15s;user-select:none}
+.task:hover{transform:translateY(-1px);box-shadow:0 3px 12px #00000050;border-color:var(--blue)}
+.task.dragging{opacity:.35;transform:scale(.95)}
+.task-top{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.prio{font-size:.78rem}
+.tname{font-weight:600;font-size:.75rem;flex:1}
+.twho{font-size:.65rem;color:var(--dim)}
+.pdot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:dot-pulse 1.5s ease-in-out infinite;flex-shrink:0}
+.pcol[data-col=done] .task{background:#0d1f12;border-color:#10b98120}
+.pcol[data-col=done] .tname{color:#10b981bb}
+
+/* RIGHT PANEL */
+.right-panel{grid-column:3/4;display:flex;flex-direction:column;gap:14px}
+
+/* WINS */
+.wins-list{display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto}
+.win{background:var(--card);border-radius:9px;padding:10px 12px;border:1px solid var(--border);border-left:3px solid var(--green);display:flex;align-items:center;gap:8px;animation:win-in .3s ease both}
+@keyframes win-in{from{opacity:0;transform:translateX(12px)}to{opacity:1;transform:none}}
+.win:hover{border-left-color:var(--cyan)}
+.win-icon{font-size:1rem}
+.win-title{font-weight:600;font-size:.76rem}
+.win-date{font-size:.62rem;color:var(--dim)}
+
+/* CRONS */
+.cron-list{display:flex;flex-direction:column;gap:6px}
+.cron{background:var(--card);border-radius:9px;padding:10px 12px;border:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.cron-icon{font-size:1rem}
+.cron-name{font-weight:600;font-size:.76rem}
+.cron-sched{font-size:.65rem;color:var(--muted)}
+.cron-last{font-size:.62rem;color:var(--dim)}
+.cron-status{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:8px;background:#10b98115;color:var(--green);margin-left:auto}
+
+/* QUESTFRAG CARD */
+.qf-card{background:linear-gradient(135deg,#f59e0b15,#3b82f610);border:1px solid #f59e0b30;border-radius:12px;padding:14px}
+.qf-title{font-size:.82rem;font-weight:700;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.qf-stat{font-size:2rem;font-weight:800;color:var(--text);margin-bottom:4px}
+.qf-sub{font-size:.72rem;color:var(--muted);margin-bottom:10px}
+.qf-next{font-size:.75rem;background:#f59e0b15;border:1px solid #f59e0b30;border-radius:8px;padding:7px 10px;color:var(--gold)}
+.qf-url{font-size:.65rem;color:var(--dim);margin-top:6px}
+
+/* MEMORY */
+.mem-list{display:flex;flex-direction:column;gap:5px}
+.mem-item{font-size:.72rem;color:var(--muted);padding:6px 10px;background:var(--card);border-radius:7px;border:1px solid var(--border);display:flex;align-items:flex-start;gap:6px}
+.mem-item::before{content:'◆';color:var(--blue);font-size:.55rem;margin-top:2px;flex-shrink:0}
+
+/* CELEBRATION */
 .cel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#00000099;z-index:999;opacity:0;pointer-events:none;transition:opacity .3s}
 .cel.show{opacity:1;pointer-events:auto}
 .cel-box{background:var(--card);border:2px solid var(--gold);border-radius:24px;padding:48px 64px;text-align:center;transform:scale(.7);transition:transform .4s cubic-bezier(.22,1,.36,1);box-shadow:0 0 60px #f59e0b30}
@@ -81,253 +156,128 @@ header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;ba
 .flash.go{animation:flash .4s ease}
 @keyframes flash{0%{opacity:.15}100%{opacity:0}}
 
-/* â”€â”€ LAYOUT â”€â”€ */
-.main-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;padding:20px 24px}
-
-/* â”€â”€ OFFICE FLOOR â”€â”€ */
-.office{
-  background:var(--bg2);border-radius:var(--radius);padding:18px;border:1px solid var(--border);
-  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
-  background-size:36px 36px;
-}
-.section-title{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-.zones{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.zone{border:1px solid var(--border);border-radius:12px;padding:14px;background:#0a1020cc}
-.zone.build{border-color:#3b82f620;background:#0a1020cc}
-.zone.strategy{border-color:#10b98120;background:#0a160fcc}
-.zone.research{border-color:#8b5cf620;background:#10091acc}
-.zone.comms{border-color:#06b6d420;background:#091318cc}
-.zone-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:5px}
-.zone.build .zone-label{color:var(--blue)}
-.zone.strategy .zone-label{color:var(--green)}
-.zone.research .zone-label{color:var(--purple)}
-.zone.comms .zone-label{color:var(--cyan)}
-.zone-label::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor}
-
-/* AGENT CARDS */
-.agent{background:var(--card);border-radius:10px;padding:14px;border:1px solid var(--border);transition:border-color .3s,box-shadow .3s}
-.agent.active{border-color:#3b82f630;animation:agent-pulse 3s ease-in-out infinite}
-@keyframes agent-pulse{0%,100%{box-shadow:0 0 8px #3b82f610}50%{box-shadow:0 0 20px #3b82f625}}
-.agent-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
-.avatar{font-size:1.8rem;line-height:1}
-.agent-info{flex:1}
-.agent-name{font-weight:700;font-size:.9rem}
-.agent-role{font-size:.7rem;color:var(--muted);margin-top:1px}
-.status-pill{display:inline-flex;align-items:center;gap:4px;margin-top:5px;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:10px}
-.status-pill.active{background:#10b98115;color:var(--green)}
-.status-pill.idle{background:#37415115;color:var(--dim)}
-.status-dot-sm{width:5px;height:5px;border-radius:50%;background:currentColor}
-.status-dot-sm.active{animation:dot-pulse 2s ease-in-out infinite}
-@keyframes dot-pulse{0%,100%{box-shadow:0 0 3px currentColor}50%{box-shadow:0 0 8px currentColor}}
-.agent-task{font-size:.75rem;color:var(--muted);font-style:italic;margin-bottom:8px;display:flex;align-items:center;gap:5px}
-.blink{display:inline-block;width:2px;height:10px;background:var(--blue);animation:blink .8s step-end infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.act-bar{display:flex;gap:2px;margin-top:6px}
-.act-blk{flex:1;height:3px;border-radius:2px;background:var(--border)}
-.act-blk.on{background:var(--blue);opacity:.7}
-.act-blk.now{background:var(--cyan);animation:act-now 1.5s ease-in-out infinite}
-@keyframes act-now{0%,100%{opacity:.6}50%{opacity:1}}
-.done-ct{font-size:.65rem;color:var(--dim);margin-top:5px}
-
-/* â”€â”€ WINS â”€â”€ */
-.wins-panel{display:flex;flex-direction:column;gap:0}
-.wins-header{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.wins-count{background:var(--green);color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px}
-.wins-list{display:flex;flex-direction:column;gap:7px}
-.win{
-  background:var(--card);border-radius:10px;padding:11px 13px;
-  border:1px solid var(--border);border-left:3px solid var(--green);
-  display:flex;align-items:center;gap:10px;
-  animation:win-in .4s ease both;transition:border-left-color .2s;
-}
-.win:hover{border-left-color:var(--cyan)}
-@keyframes win-in{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
-.win-icon{font-size:1.1rem}
-.win-title{font-weight:600;font-size:.8rem}
-.win-date{font-size:.65rem;color:var(--dim)}
-
-/* â”€â”€ PIPELINE â”€â”€ */
-.pipeline{padding:0 24px 24px}
-.pipeline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.pipe-col{background:var(--bg2);border-radius:var(--radius);padding:14px;min-height:140px;border:1px solid var(--border);border-top:3px solid transparent;transition:background .2s,border-color .2s}
-.pipe-col[data-col=progress]{border-top-color:var(--blue)}
-.pipe-col[data-col=next]{border-top-color:var(--gold)}
-.pipe-col[data-col=done]{border-top-color:var(--green)}
-.pipe-col.drag-over{background:#1a2840;border-color:var(--blue)}
-.pipe-header{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.pipe-count{background:var(--card);color:var(--dim);font-size:.65rem;padding:2px 6px;border-radius:6px}
-.task-list{display:flex;flex-direction:column;gap:7px;min-height:40px}
-
-/* TASK CARDS */
-.task{
-  background:var(--card);border-radius:9px;padding:10px 12px;border:1px solid var(--border);
-  cursor:grab;transition:transform .15s,box-shadow .15s,opacity .15s;user-select:none;
-}
-.task:hover{transform:translateY(-2px);box-shadow:0 4px 16px #00000050;border-color:var(--blue)}
-.task.dragging{opacity:.35;transform:scale(.95)}
-.task-top{display:flex;align-items:center;gap:7px;margin-bottom:3px}
-.prio{font-size:.82rem}
-.task-name{font-weight:600;font-size:.78rem;flex:1}
-.task-who{font-size:.68rem;color:var(--dim)}
-.progress-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:dot-pulse 1.5s ease-in-out infinite;flex-shrink:0}
-
-/* â”€â”€ DONE CARDS â€” SPECIAL STYLE â”€â”€ */
-.pipe-col[data-col=done] .task{
-  background:#0d1f12;border-color:#10b98125;
-  position:relative;overflow:hidden;
-}
-.pipe-col[data-col=done] .task::before{
-  content:'âœ“';position:absolute;right:10px;top:50%;transform:translateY(-50%);
-  font-size:1rem;color:#10b98130;font-weight:900;
-}
-.pipe-col[data-col=done] .task-name{color:#10b981cc}
-.done-flash{animation:done-flash .6s ease}
-@keyframes done-flash{0%{background:var(--card)}40%{background:#10b98120}100%{background:#0d1f12}}
-
-/* â”€â”€ RESPONSIVE â”€â”€ */
-@media(max-width:960px){.main-grid{grid-template-columns:1fr}.zones{grid-template-columns:1fr}.pipeline-grid{grid-template-columns:1fr}}
+@media(max-width:1100px){.layout{grid-template-columns:1fr 300px}.pipeline-panel{grid-column:1/2}.right-panel{grid-column:2/3;grid-row:1/3}}
+@media(max-width:700px){.layout{grid-template-columns:1fr}.right-panel{grid-column:1}.pipeline-panel{grid-column:1}.office{grid-column:1}.zones{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<!-- AUTH GATE -->
-<div id="auth-gate">
-  <div class="auth-box">
-    <div class="auth-logo">THE <span>COMPOUND</span></div>
-    <div class="auth-sub">Mission Control â€” Authorised Access Only</div>
-    <input class="auth-input" id="auth-input" type="password" placeholder="Enter access code" maxlength="32" autofocus>
-    <button class="auth-btn" id="auth-btn">Enter â†’</button>
-    <div class="auth-err" id="auth-err"></div>
+<!-- AUTH -->
+<div id="gate">
+  <div class="gate-box">
+    <div class="gate-logo">THE <span>COMPOUND</span></div>
+    <div class="gate-sub">Mission Control — Authorised Access Only</div>
+    <input class="gate-input" id="gate-in" type="password" placeholder="Access code" maxlength="32" autofocus>
+    <button class="gate-btn" id="gate-btn">Enter</button>
+    <div class="gate-err" id="gate-err"></div>
   </div>
-</div>
-
-<header>
-  <div class="logo">THE <span>COMPOUND</span></div>
-  <div class="xp-section">
-    <div class="level-pill" id="lvlBadge">LV 2</div>
-    <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:40%"></div></div>
-    <div class="xp-num" id="xpNum">40/100 XP</div>
-  </div>
-  <div class="clock"><div class="clock-time" id="ct"></div><div id="cd"></div></div>
-</header>
-
-<div class="streak-banner">
-  <div class="streak-stat"><span class="icon">ðŸ”¥</span> Day Streak: <strong id="streakDays">6</strong></div>
-  <div class="streak-stat"><span class="icon">âš¡</span> Tasks Crushed: <strong id="totalDone">0</strong></div>
-  <div class="streak-stat"><span class="icon">ðŸ†</span> Wins Logged: <strong id="totalWins">0</strong></div>
-  <div class="streak-stat"><span class="icon">ðŸš€</span> Empire: <strong>Level <span id="empireLevel">2</span></strong></div>
 </div>
 
 <div class="flash" id="flashEl"></div>
-<div class="cel" id="celEl">
-  <div class="cel-box">
-    <div class="big" id="celEmoji">ðŸŽ‰</div>
-    <h2 id="celTitle">LEVEL UP!</h2>
-    <p id="celText">Empire Level 3 unlocked</p>
+<div class="cel" id="celEl"><div class="cel-box"><div class="big" id="celEmoji">🎯</div><h2 id="celTitle">YES!</h2><p id="celText"></p></div></div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">THE <span>COMPOUND</span></div>
+  <div class="header-center">
+    <div class="lvl-badge" id="lvlBadge">LV 1</div>
+    <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+    <div class="xp-num" id="xpNum">0/100</div>
   </div>
+  <div class="header-right">
+    <div class="live-badge"><div class="live-dot"></div> LIVE</div>
+    <div class="clock"><div class="clock-time" id="ct"></div><div id="cd"></div></div>
+  </div>
+</header>
+
+<div class="stats-bar" id="statsBar">
+  <div class="stat"><span class="stat-icon">🔥</span> Streak: <strong id="streakStat">0</strong> days</div>
+  <div class="stat"><span class="stat-icon">⚡</span> Tasks Crushed: <strong id="doneStat">0</strong></div>
+  <div class="stat"><span class="stat-icon">🏆</span> Wins: <strong id="winsStat">0</strong></div>
+  <div class="stat"><span class="stat-icon">🎮</span> QuestFrag Signups: <strong id="qfStat">0</strong></div>
+  <div class="stat"><span class="stat-icon">📡</span> <span class="last-update" id="lastUpdate">Fetching...</span></div>
 </div>
 
-<div class="main-grid">
-  <div>
-    <div class="office">
-      <div class="section-title">Office Floor</div>
-      <div class="zones" id="zones"></div>
-    </div>
+<div class="layout">
+  <!-- OFFICE FLOOR -->
+  <div class="office">
+    <div class="sec-title">Office Floor</div>
+    <div class="zones" id="zones"></div>
   </div>
-  <div>
-    <div class="wins-header">
-      <div class="section-title" style="flex:1;margin-bottom:0">Win Wall</div>
-      <div class="wins-count" id="winsCount">0</div>
-    </div>
-    <div class="wins-list" id="winsList"></div>
-  </div>
-</div>
 
-<div class="pipeline">
-  <div class="section-title" style="margin-bottom:14px">Mission Pipeline</div>
-  <div class="pipeline-grid">
-    <div class="pipe-col" id="col-progress" data-col="progress">
-      <div class="pipe-header" style="color:var(--blue)">ðŸ”µ In Progress <span class="pipe-count" id="cnt-progress">0</span></div>
-      <div class="task-list" id="list-progress"></div>
+  <!-- PIPELINE -->
+  <div class="pipeline-panel">
+    <div class="sec-title">Mission Pipeline</div>
+    <div class="pipeline-cols">
+      <div class="pcol" id="col-progress" data-col="progress">
+        <div class="pcol-hdr" style="color:var(--blue)">In Progress <span class="pcol-cnt" id="cnt-progress">0</span></div>
+        <div class="task-list" id="list-progress"></div>
+      </div>
+      <div class="pcol" id="col-next" data-col="next">
+        <div class="pcol-hdr" style="color:var(--gold)">Up Next <span class="pcol-cnt" id="cnt-next">0</span></div>
+        <div class="task-list" id="list-next"></div>
+      </div>
+      <div class="pcol" id="col-done" data-col="done">
+        <div class="pcol-hdr" style="color:var(--green)">Crushed <span class="pcol-cnt" id="cnt-done">0</span></div>
+        <div class="task-list" id="list-done"></div>
+      </div>
     </div>
-    <div class="pipe-col" id="col-next" data-col="next">
-      <div class="pipe-header" style="color:var(--gold)">â­ Up Next <span class="pipe-count" id="cnt-next">0</span></div>
-      <div class="task-list" id="list-next"></div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+
+    <!-- QUESTFRAG -->
+    <div>
+      <div class="sec-title">QuestFrag</div>
+      <div class="qf-card" id="qfCard">
+        <div class="qf-title">🎮 QuestFrag Waitlist</div>
+        <div class="qf-stat" id="qfCount">—</div>
+        <div class="qf-sub">signups so far</div>
+        <div class="qf-next" id="qfNext">Loading...</div>
+        <div class="qf-url" id="qfUrl"></div>
+      </div>
     </div>
-    <div class="pipe-col" id="col-done" data-col="done">
-      <div class="pipe-header" style="color:var(--green)">âœ… Crushed It <span class="pipe-count" id="cnt-done">0</span></div>
-      <div class="task-list" id="list-done"></div>
+
+    <!-- CRONS -->
+    <div>
+      <div class="sec-title">Scheduled Tasks</div>
+      <div class="cron-list" id="cronList"></div>
     </div>
+
+    <!-- WINS -->
+    <div>
+      <div class="sec-title">Win Wall <span style="background:var(--green);color:#fff;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:4px" id="winCount">0</span></div>
+      <div class="wins-list" id="winsList"></div>
+    </div>
+
+    <!-- MEMORY -->
+    <div>
+      <div class="sec-title">Memory</div>
+      <div class="mem-list" id="memList"></div>
+    </div>
+
   </div>
 </div>
 
 <script>
-// AUTH
+const CODE = 'compound2026';
+const STATE_URL = 'https://raw.githubusercontent.com/jarvisago-netizen/the-compound/main/state.json';
+const REFRESH_MS = 30000;
+const PRIO = {urgent:'💎',normal:'⭐',low:'🔵'};
+const ZONES = {build:{label:'Build Zone',cls:'build'},strategy:{label:'Strategy Room',cls:'strategy'},research:{label:'Research Lab',cls:'research'},comms:{label:'Comms HQ',cls:'comms'}};
+
+// Auth
 (function(){
-  const CODE='compound2026';
-  const gate=document.getElementById('auth-gate');
-  const input=document.getElementById('auth-input');
-  const btn=document.getElementById('auth-btn');
-  const err=document.getElementById('auth-err');
-  if(sessionStorage.getItem('compound_auth')==='ok'){gate.classList.add('hidden');return;}
-  function tryAuth(){
-    if(input.value===CODE){sessionStorage.setItem('compound_auth','ok');gate.classList.add('hidden');}
-    else{err.textContent='Wrong code. Try again.';input.value='';input.focus();}
-  }
+  const gate=document.getElementById('gate');
+  const inp=document.getElementById('gate-in');
+  const btn=document.getElementById('gate-btn');
+  const err=document.getElementById('gate-err');
+  if(sessionStorage.getItem('cauth')==='ok'){gate.classList.add('gone');init();return;}
+  function tryAuth(){if(inp.value===CODE){sessionStorage.setItem('cauth','ok');gate.classList.add('gone');init();}else{err.textContent='Wrong code.';inp.value='';inp.focus();}}
   btn.addEventListener('click',tryAuth);
-  input.addEventListener('keydown',e=>{if(e.key==='Enter')tryAuth();});
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter')tryAuth();});
 })();
-
-const DEFAULT={
-  level:2,xp:40,streak:6,
-  agents:[
-    {id:'jarvis',name:'Jarvis',role:'Co-founder / AI Partner',emoji:'ðŸŒ€',status:'active',task:'Setting up browser automation',zone:'build',done:24},
-    {id:'wan',name:'Wan',role:'Co-founder / Visionary',emoji:'ðŸ§ ',status:'active',task:'Validating QuestFrag idea',zone:'strategy',done:8},
-  ],
-  wins:[
-    {title:'QuestFrag landing page live',icon:'ðŸŽ®',date:'Mar 26',color:'#f59e0b'},
-    {title:'Browser automation incoming',icon:'ðŸ¤–',date:'Mar 26',color:'#3b82f6'},
-    {title:'Discord exec approvals unlocked',icon:'âš¡',date:'Mar 25',color:'#10b981'},
-    {title:'OpenClaw updated',icon:'ðŸ”„',date:'Mar 25',color:'#06b6d4'},
-    {title:'The Compound v2 shipped',icon:'â¬†ï¸',date:'Mar 25',color:'#3b82f6'},
-    {title:'Security locked down',icon:'ðŸ”’',date:'Mar 25',color:'#8b5cf6'},
-    {title:'Morning briefing live',icon:'â˜€ï¸',date:'Mar 24',color:'#f59e0b'},
-    {title:'Discord voice ready',icon:'ðŸŽ™ï¸',date:'Mar 24',color:'#06b6d4'},
-    {title:'The Compound v1 shipped',icon:'ðŸ­',date:'Mar 23',color:'#10b981'},
-    {title:'Removed @ mention',icon:'ðŸŽ¤',date:'Mar 23',color:'#10b981'},
-    {title:'Connected Discord',icon:'ðŸ”—',date:'Mar 23',color:'#10b981'},
-    {title:'Jarvis went online',icon:'ðŸš€',date:'Mar 20',color:'#3b82f6'},
-  ],
-  tasks:{
-    progress:[
-      {id:'t1',title:'QuestFrag waitlist validation',priority:'urgent',assignee:'ðŸ§ ðŸŒ€'},
-      {id:'t2',title:'Playwright browser automation',priority:'normal',assignee:'ðŸŒ€'},
-      {id:'t3',title:'Formspree email capture',priority:'normal',assignee:'ðŸŒ€'},
-    ],
-    next:[
-      {id:'t4',title:'Post QuestFrag to gaming communities',priority:'urgent',assignee:'ðŸ§ '},
-      {id:'t5',title:'QuestFrag MVP build (EA FC)',priority:'normal',assignee:'ðŸŒ€'},
-      {id:'t6',title:'Twilio phone calls',priority:'low',assignee:'ðŸŒ€'},
-      {id:'t7',title:'Discord voice activation',priority:'low',assignee:'ðŸŒ€'},
-    ],
-    done:[
-      {id:'t8',title:'Discord exec approvals',priority:'normal',assignee:'ðŸŒ€'},
-      {id:'t9',title:'OpenClaw update',priority:'normal',assignee:'ðŸŒ€'},
-      {id:'t10',title:'Power settings script',priority:'normal',assignee:'ðŸ§ '},
-      {id:'t11',title:'Got Jarvis online',priority:'normal',assignee:'ðŸŒ€'},
-      {id:'t12',title:'Connected Discord',priority:'normal',assignee:'ðŸ§ ðŸŒ€'},
-      {id:'t13',title:'Removed @ mention',priority:'normal',assignee:'ðŸ§ '},
-      {id:'t14',title:'Built The Compound v1+v2',priority:'normal',assignee:'ðŸŒ€'},
-      {id:'t15',title:'Security lockdown',priority:'normal',assignee:'ðŸŒ€'},
-      {id:'t16',title:'Morning briefing setup',priority:'normal',assignee:'ðŸŒ€'},
-    ]
-  }
-};
-
-function load(){try{const s=localStorage.getItem('compound_v3');if(s)return JSON.parse(s);}catch(e){}return JSON.parse(JSON.stringify(DEFAULT));}
-function save(){localStorage.setItem('compound_v3',JSON.stringify(state));}
-let state=load();
 
 // Clock
 function tick(){
@@ -337,29 +287,9 @@ function tick(){
 }
 tick();setInterval(tick,1000);
 
-// XP
-function renderXP(){
-  document.getElementById('lvlBadge').textContent=`LV ${state.level}`;
-  document.getElementById('xpFill').style.width=state.xp+'%';
-  document.getElementById('xpNum').textContent=`${state.xp}/100 XP`;
-  document.getElementById('empireLevel').textContent=state.level;
-  document.getElementById('streakDays').textContent=state.streak||6;
-  document.getElementById('totalDone').textContent=state.tasks.done.length;
-  document.getElementById('totalWins').textContent=state.wins.length;
-  document.getElementById('winsCount').textContent=state.wins.length;
-}
-function addXP(n){
-  state.xp+=n;
-  const f=document.getElementById('xpFill');
-  f.classList.remove('pulse');void f.offsetWidth;f.classList.add('pulse');
-  if(state.xp>=100){
-    state.level++;state.xp-=100;renderXP();
-    showCel('ðŸ†','LEVEL UP!',`Empire Level ${state.level} unlocked! You're unstoppable.`);
-  } else renderXP();
-  save();
-}
-function showFlash(){const f=document.getElementById('flashEl');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');}
-function showCel(emoji,title,text){
+// Flash / Cel
+function doFlash(){const f=document.getElementById('flashEl');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');}
+function doCel(emoji,title,text){
   document.getElementById('celEmoji').textContent=emoji;
   document.getElementById('celTitle').textContent=title;
   document.getElementById('celText').textContent=text;
@@ -368,95 +298,162 @@ function showCel(emoji,title,text){
 }
 document.getElementById('celEl').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('show');});
 
-// Office
-const ZONES={build:{label:'Build Zone',cls:'build'},strategy:{label:'Strategy Room',cls:'strategy'},research:{label:'Research Lab',cls:'research'},comms:{label:'Comms HQ',cls:'comms'}};
-function renderOffice(){
-  const byZone={};state.agents.forEach(a=>{(byZone[a.zone]=byZone[a.zone]||[]).push(a);});
+// State
+let liveState = null;
+let localTasks = null; // local overrides for drag/drop
+
+async function fetchState(){
+  try{
+    const r = await fetch(STATE_URL + '?t=' + Date.now());
+    const data = await r.json();
+    return data;
+  }catch(e){
+    console.error('State fetch failed:', e);
+    return null;
+  }
+}
+
+function renderAll(state){
+  if(!state) return;
+  const e = state.empire || {};
+  // XP
+  document.getElementById('lvlBadge').textContent = `LV ${e.level||1}`;
+  document.getElementById('xpFill').style.width = (e.xp||0) + '%';
+  document.getElementById('xpNum').textContent = `${e.xp||0}/100`;
+  // Stats
+  document.getElementById('streakStat').textContent = e.streak||0;
+  document.getElementById('doneStat').textContent = e.totalTasksDone||0;
+  document.getElementById('winsStat').textContent = e.totalWins||0;
+  document.getElementById('qfStat').textContent = state.questfrag?.waitlistCount||0;
+  // Last update
+  const lu = state.meta?.lastUpdated ? new Date(state.meta.lastUpdated).toLocaleString([],{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : '—';
+  document.getElementById('lastUpdate').textContent = 'Updated ' + lu;
+
+  renderOffice(state.agents||[]);
+  renderPipeline(state.tasks||{progress:[],next:[],done:[]});
+  renderWins(state.wins||[]);
+  renderCrons(state.crons||[]);
+  renderQF(state.questfrag||{});
+  renderMemory(state.memory?.keyFacts||[]);
+}
+
+function renderOffice(agents){
+  const byZone={};agents.forEach(a=>{(byZone[a.zone]=byZone[a.zone]||[]).push(a);});
   document.getElementById('zones').innerHTML=['build','strategy','research','comms'].map(zk=>{
-    const z=ZONES[zk],agents=byZone[zk]||[];
+    const z=ZONES[zk],ags=byZone[zk]||[];
     return `<div class="zone ${z.cls}">
-      <div class="zone-label">${z.label}</div>
-      ${agents.length?agents.map(a=>`
+      <div class="zone-lbl">${z.label}</div>
+      ${ags.length?ags.map(a=>`
         <div class="agent ${a.status}">
           <div class="agent-top">
             <div class="avatar">${a.emoji}</div>
             <div class="agent-info">
-              <div class="agent-name">${a.name}</div>
-              <div class="agent-role">${a.role}</div>
-              <div class="status-pill ${a.status}"><div class="status-dot-sm ${a.status}"></div>${a.status==='active'?'Active':'Idle'}</div>
+              <div class="name">${a.name}</div>
+              <div class="role">${a.role}</div>
+              <div class="status-pill ${a.status}"><div class="spd ${a.status}"></div>${a.status}</div>
             </div>
           </div>
           <div class="agent-task">${a.task}${a.status==='active'?'<span class="blink"></span>':''}</div>
-          <div class="act-bar">${Array.from({length:8},(_,i)=>`<div class="act-blk ${i<a.done-1?'on':i===Math.min(a.done-1,7)?'now':''}"></div>`).join('')}</div>
-          <div class="done-ct">âœ… ${a.done} missions completed</div>
+          <div class="act-bar">${Array.from({length:8},(_,i)=>`<div class="ab ${i<a.done-1?'on':i===Math.min(a.done-1,7)?'now':''}"></div>`).join('')}</div>
+          <div class="done-ct">✅ ${a.done} missions completed</div>
         </div>
-      `).join(''):`<div style="color:var(--dim);font-size:.72rem;padding:6px">Empty</div>`}
+      `).join(''):`<div style="color:var(--dim);font-size:.7rem;padding:4px">Empty</div>`}
     </div>`;
   }).join('');
 }
 
-// Wins
-function renderWins(){
-  document.getElementById('winsList').innerHTML=state.wins.map((w,i)=>`
-    <div class="win" style="border-left-color:${w.color||'var(--green)'};animation-delay:${i*0.05}s">
-      <div class="win-icon">${w.icon}</div>
-      <div><div class="win-title">${w.title}</div><div class="win-date">${w.date}</div></div>
-    </div>
-  `).join('');
-  document.getElementById('winsCount').textContent=state.wins.length;
-  document.getElementById('totalWins').textContent=state.wins.length;
-}
-
-// Pipeline
-const PRIO={urgent:'ðŸ’Ž',normal:'â­',low:'ðŸ”µ'};
-let dragId=null,dragSrc=null;
-function renderPipeline(){
+let dragId=null,dragSrc=null,localTaskState=null;
+function getTaskState(state){return localTaskState||state.tasks;}
+function renderPipeline(tasks){
+  if(!localTaskState) localTaskState = JSON.parse(JSON.stringify(tasks));
+  const t = localTaskState;
   ['progress','next','done'].forEach(col=>{
-    document.getElementById('list-'+col).innerHTML=state.tasks[col].map(t=>`
-      <div class="task" draggable="true" data-id="${t.id}" data-col="${col}">
+    document.getElementById('list-'+col).innerHTML=(t[col]||[]).map(task=>`
+      <div class="task" draggable="true" data-id="${task.id}" data-col="${col}">
         <div class="task-top">
-          ${col==='progress'?'<div class="progress-dot"></div>':''}
-          <span class="prio">${PRIO[t.priority]||'â­'}</span>
-          <span class="task-name">${t.title}</span>
+          ${col==='progress'?'<div class="pdot"></div>':''}
+          <span class="prio">${PRIO[task.priority]||'⭐'}</span>
+          <span class="tname">${task.title}</span>
         </div>
-        <div class="task-who">${t.assignee}</div>
+        <div class="twho">${task.assignee}</div>
       </div>
     `).join('');
-    document.getElementById('cnt-'+col).textContent=state.tasks[col].length;
+    document.getElementById('cnt-'+col).textContent=(t[col]||[]).length;
   });
-  document.getElementById('totalDone').textContent=state.tasks.done.length;
   bindDrag();
 }
 function bindDrag(){
   document.querySelectorAll('.task').forEach(c=>{
     c.addEventListener('dragstart',e=>{dragId=c.dataset.id;dragSrc=c.dataset.col;c.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
-    c.addEventListener('dragend',()=>{c.classList.remove('dragging');dragId=dragSrc=null;document.querySelectorAll('.pipe-col').forEach(x=>x.classList.remove('drag-over'));});
+    c.addEventListener('dragend',()=>{c.classList.remove('dragging');dragId=dragSrc=null;document.querySelectorAll('.pcol').forEach(x=>x.classList.remove('drag-over'));});
   });
-  document.querySelectorAll('.pipe-col').forEach(col=>{
+  document.querySelectorAll('.pcol').forEach(col=>{
     col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
     col.addEventListener('dragleave',()=>col.classList.remove('drag-over'));
     col.addEventListener('drop',e=>{
       e.preventDefault();col.classList.remove('drag-over');
       const tc=col.dataset.col;if(!dragId||tc===dragSrc)return;
-      const idx=state.tasks[dragSrc].findIndex(t=>t.id===dragId);if(idx<0)return;
-      const [task]=state.tasks[dragSrc].splice(idx,1);
-      state.tasks[tc].push(task);
+      const idx=localTaskState[dragSrc].findIndex(t=>t.id===dragId);if(idx<0)return;
+      const [task]=localTaskState[dragSrc].splice(idx,1);
+      localTaskState[tc].push(task);
       if(tc==='done'&&dragSrc!=='done'){
-        addXP(10);showFlash();
-        const now=new Date();
-        state.wins.unshift({title:task.title,icon:'ðŸ†',date:now.toLocaleDateString([],{month:'short',day:'numeric'}),color:'var(--green)'});
-        renderWins();
-        // Hype message
-        const hypes=['CRUSHED IT! ðŸ”¥','MISSION COMPLETE! ðŸŽ¯','GET IN! ðŸ’ª','LET\'S GO! ðŸš€','NAILED IT! âš¡'];
-        showCel('ðŸŽ¯',hypes[Math.floor(Math.random()*hypes.length)],`"${task.title}" is done. Keep the momentum.`);
+        doFlash();
+        const hypes=['CRUSHED IT! 🔥','MISSION COMPLETE! 🎯','GET IN! 💪','LET\'S GO! 🚀'];
+        doCel('🎯',hypes[Math.floor(Math.random()*hypes.length)],`"${task.title}" — done. Keep going.`);
       }
-      save();renderPipeline();
+      renderPipeline(localTaskState);
     });
   });
 }
 
-renderXP();renderOffice();renderWins();renderPipeline();
+function renderWins(wins){
+  document.getElementById('winsList').innerHTML=wins.map((w,i)=>`
+    <div class="win" style="border-left-color:${w.color||'var(--green)'};animation-delay:${i*.04}s">
+      <div class="win-icon">${w.icon}</div>
+      <div><div class="win-title">${w.title}</div><div class="win-date">${w.date}</div></div>
+    </div>
+  `).join('');
+  document.getElementById('winCount').textContent=wins.length;
+}
+
+function renderCrons(crons){
+  document.getElementById('cronList').innerHTML=crons.map(c=>`
+    <div class="cron">
+      <div class="cron-icon">${c.icon}</div>
+      <div style="flex:1">
+        <div class="cron-name">${c.name}</div>
+        <div class="cron-sched">${c.schedule}</div>
+        <div class="cron-last">Last: ${c.lastRun}</div>
+      </div>
+      <div class="cron-status">${c.status}</div>
+    </div>
+  `).join('');
+}
+
+function renderQF(qf){
+  document.getElementById('qfCount').textContent = qf.waitlistCount ?? '—';
+  document.getElementById('qfNext').textContent = '→ ' + (qf.nextAction||'TBD');
+  document.getElementById('qfUrl').textContent = qf.url||'';
+}
+
+function renderMemory(facts){
+  document.getElementById('memList').innerHTML=facts.map(f=>`<div class="mem-item">${f}</div>`).join('');
+}
+
+async function init(){
+  const state = await fetchState();
+  if(state){liveState=state;renderAll(state);}
+  setInterval(async()=>{
+    const fresh = await fetchState();
+    if(fresh){
+      liveState=fresh;
+      // Don't override local task state on refresh
+      const savedTasks = localTaskState;
+      renderAll(fresh);
+      if(savedTasks) localTaskState=savedTasks;
+    }
+  }, REFRESH_MS);
+}
 </script>
 </body>
 </html>
-
