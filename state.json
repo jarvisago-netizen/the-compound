@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastUpdated": "2026-03-26T19:20:00+11:00",
+    "lastUpdated": "2026-03-26T19:28:00+11:00",
     "updatedBy": "Jarvis",
     "version": "4.0"
   },
@@ -19,8 +19,8 @@
       "emoji": "🌀",
       "zone": "build",
       "status": "active",
-      "task": "Building The Compound v4 — live data",
-      "done": 28
+      "task": "Updating mission pipeline with security task",
+      "done": 29
     },
     {
       "id": "wan",
@@ -50,15 +50,15 @@
   "tasks": {
     "progress": [
       { "id": "t1", "title": "QuestFrag waitlist validation", "priority": "urgent", "assignee": "🧠🌀" },
-      { "id": "t2", "title": "Compound v4 live dashboard", "priority": "urgent", "assignee": "🌀" },
-      { "id": "t3", "title": "QuestFrag game images background", "priority": "normal", "assignee": "🌀" }
+      { "id": "t2", "title": "Compound v4 live dashboard", "priority": "urgent", "assignee": "🌀" }
     ],
     "next": [
       { "id": "t4", "title": "Post QuestFrag to Reddit", "priority": "urgent", "assignee": "🧠" },
-      { "id": "t5", "title": "QuestFrag MVP build (EA FC)", "priority": "normal", "assignee": "🌀" },
-      { "id": "t6", "title": "Chrome persistent session setup", "priority": "normal", "assignee": "🌀" },
-      { "id": "t7", "title": "Twilio phone calls", "priority": "low", "assignee": "🌀" },
-      { "id": "t8", "title": "Discord voice activation", "priority": "low", "assignee": "🌀" }
+      { "id": "t5", "title": "Security hardening (rotate tokens, sandbox tools, VPS)", "priority": "normal", "assignee": "🌀" },
+      { "id": "t6", "title": "QuestFrag MVP build (EA FC)", "priority": "normal", "assignee": "🌀" },
+      { "id": "t7", "title": "Chrome persistent session setup", "priority": "normal", "assignee": "🌀" },
+      { "id": "t8", "title": "Twilio phone calls", "priority": "low", "assignee": "🌀" },
+      { "id": "t9", "title": "Discord voice activation", "priority": "low", "assignee": "🌀" }
     ],
     "done": [
       { "id": "d1", "title": "Discord exec approvals", "priority": "normal", "assignee": "🌀" },
