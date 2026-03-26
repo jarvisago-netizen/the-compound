@@ -7,251 +7,266 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0e17;--bg-mid:#0f1624;--bg-card:#111827;--bg-card-hover:#1a2234;
-  --blue:#3b82f6;--cyan:#06b6d4;--green:#10b981;--purple:#8b5cf6;--yellow:#f59e0b;--red:#ef4444;
-  --text:#f0f6fc;--muted:#8b949e;--dim:#4b5563;
-  --border:#1e2a3a;--radius:14px;
+  --bg:#070b14;--bg2:#0d1321;--card:#111827;--card2:#161f30;
+  --blue:#3b82f6;--cyan:#06b6d4;--green:#10b981;--gold:#f59e0b;--purple:#8b5cf6;--red:#ef4444;
+  --text:#f0f6fc;--muted:#8b949e;--dim:#374151;
+  --border:#1e2d45;--radius:14px;
 }
 body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-/* HEADER */
+/* ── HEADER ── */
 header{
   display:flex;align-items:center;justify-content:space-between;
-  padding:14px 28px;background:var(--bg-mid);border-bottom:1px solid var(--border);
+  padding:14px 24px;background:var(--bg2);border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:100;overflow:hidden;
 }
-header::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(90deg,transparent,#3b82f610,#06b6d408,transparent);
-  animation:header-shimmer 6s ease-in-out infinite;pointer-events:none;
+header::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--cyan),transparent);animation:scan 4s linear infinite}
+@keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.logo{font-size:1.2rem;font-weight:800;letter-spacing:2px}
+.logo span{color:var(--cyan);text-shadow:0 0 10px var(--cyan)}
+
+/* XP BAR */
+.xp-section{display:flex;align-items:center;gap:12px;flex:1;max-width:400px;margin:0 24px}
+.level-pill{
+  background:linear-gradient(135deg,var(--gold),#d97706);color:#000;
+  font-weight:800;font-size:.72rem;padding:4px 12px;border-radius:20px;
+  white-space:nowrap;text-transform:uppercase;letter-spacing:.5px;
+  box-shadow:0 0 14px #f59e0b40;animation:level-glow 3s ease-in-out infinite;
 }
-@keyframes header-shimmer{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
-.logo{font-size:1.3rem;font-weight:800;letter-spacing:2px;color:var(--text);position:relative}
-.logo span{color:var(--cyan);text-shadow:0 0 12px var(--cyan)}
-.empire{display:flex;align-items:center;gap:12px;position:relative}
-.empire-badge{
-  background:linear-gradient(135deg,var(--blue),var(--cyan));
-  color:#fff;font-weight:700;font-size:.78rem;
-  padding:4px 14px;border-radius:20px;white-space:nowrap;
-  box-shadow:0 0 12px #3b82f640;
-}
-.xp-wrap{display:flex;align-items:center;gap:8px;min-width:180px}
-.xp-outer{flex:1;height:12px;background:#1a2234;border-radius:8px;overflow:hidden;border:1px solid var(--border);position:relative}
-.xp-inner{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:8px;transition:width .6s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
-.xp-inner::after{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,#ffffff30,transparent);animation:shimmer 2.5s ease-in-out infinite}
-@keyframes shimmer{0%{left:-100%}100%{left:200%}}
-.xp-inner.pulse{animation:xp-pulse .6s ease}
+@keyframes level-glow{0%,100%{box-shadow:0 0 10px #f59e0b40}50%{box-shadow:0 0 24px #f59e0b80}}
+.xp-track{flex:1;height:10px;background:#0d1321;border-radius:6px;overflow:hidden;border:1px solid var(--border);position:relative}
+.xp-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:6px;transition:width .8s cubic-bezier(.22,1,.36,1);position:relative;overflow:hidden}
+.xp-fill::after{content:'';position:absolute;top:0;left:-100%;width:50%;height:100%;background:linear-gradient(90deg,transparent,#ffffff40,transparent);animation:xp-shine 2s ease-in-out infinite}
+@keyframes xp-shine{0%{left:-100%}100%{left:200%}}
+.xp-fill.pulse{animation:xp-pulse .5s ease}
 @keyframes xp-pulse{0%,100%{box-shadow:none}50%{box-shadow:0 0 20px var(--cyan)}}
-.xp-label{font-size:.72rem;color:var(--muted);white-space:nowrap}
-.clock{text-align:right;font-size:.82rem;color:var(--muted);min-width:140px}
-.clock-time{font-size:1.05rem;color:var(--text);font-weight:600}
+.xp-num{font-size:.7rem;color:var(--muted);white-space:nowrap}
+.clock{text-align:right;font-size:.78rem;color:var(--muted)}
+.clock-time{font-size:.95rem;color:var(--text);font-weight:600}
 
-/* CELEBRATION */
-.celebration{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#00000099;z-index:999;opacity:0;pointer-events:none;transition:opacity .3s}
-.celebration.show{opacity:1;pointer-events:auto}
-.cel-inner{background:var(--bg-card);border:2px solid var(--cyan);border-radius:20px;padding:40px 60px;text-align:center;transform:scale(.8);transition:transform .4s cubic-bezier(.22,1,.36,1);box-shadow:0 0 40px #06b6d430}
-.celebration.show .cel-inner{transform:scale(1)}
-.cel-inner h2{font-size:2rem;color:var(--cyan);margin-bottom:8px}
-.cel-inner p{color:var(--muted)}
-.flash{position:fixed;inset:0;background:var(--cyan);opacity:0;pointer-events:none;z-index:200}
-.flash.go{animation:flash-anim .4s ease}
-@keyframes flash-anim{0%{opacity:.12}100%{opacity:0}}
-
-/* LAYOUT */
-.layout{display:grid;grid-template-columns:1fr 300px;gap:20px;padding:20px 28px}
-.office-wrap{display:flex;flex-direction:column;gap:20px}
-.section-title{font-size:.82rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* OFFICE FLOOR */
-.office-floor{
-  background:var(--bg-mid);border-radius:var(--radius);padding:20px;border:1px solid var(--border);
-  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
-  background-size:40px 40px;
+/* ── STREAK BANNER ── */
+.streak-banner{
+  background:linear-gradient(135deg,#f59e0b18,#3b82f610);
+  border-bottom:1px solid #f59e0b20;
+  padding:10px 24px;display:flex;align-items:center;justify-content:center;gap:20px;
+  font-size:.78rem;color:var(--muted);
 }
-.zones{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.zone{background:#0f1624cc;border:1px solid var(--border);border-radius:12px;padding:14px;position:relative}
-.zone-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.zone-label::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.streak-stat{display:flex;align-items:center;gap:6px}
+.streak-stat strong{color:var(--text);font-size:.88rem}
+.streak-stat .icon{font-size:1rem}
+
+/* ── CELEBRATION ── */
+.cel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:#00000099;z-index:999;opacity:0;pointer-events:none;transition:opacity .3s}
+.cel.show{opacity:1;pointer-events:auto}
+.cel-box{background:var(--card);border:2px solid var(--gold);border-radius:24px;padding:48px 64px;text-align:center;transform:scale(.7);transition:transform .4s cubic-bezier(.22,1,.36,1);box-shadow:0 0 60px #f59e0b30}
+.cel.show .cel-box{transform:scale(1)}
+.cel-box .big{font-size:3rem;margin-bottom:12px}
+.cel-box h2{font-size:1.8rem;color:var(--gold);margin-bottom:8px}
+.cel-box p{color:var(--muted)}
+.flash{position:fixed;inset:0;background:var(--green);opacity:0;pointer-events:none;z-index:200}
+.flash.go{animation:flash .4s ease}
+@keyframes flash{0%{opacity:.15}100%{opacity:0}}
+
+/* ── LAYOUT ── */
+.main-grid{display:grid;grid-template-columns:1fr 320px;gap:20px;padding:20px 24px}
+
+/* ── OFFICE FLOOR ── */
+.office{
+  background:var(--bg2);border-radius:var(--radius);padding:18px;border:1px solid var(--border);
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:36px 36px;
+}
+.section-title{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.zones{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.zone{border:1px solid var(--border);border-radius:12px;padding:14px;background:#0a1020cc}
+.zone.build{border-color:#3b82f620;background:#0a1020cc}
+.zone.strategy{border-color:#10b98120;background:#0a160fcc}
+.zone.research{border-color:#8b5cf620;background:#10091acc}
+.zone.comms{border-color:#06b6d420;background:#091318cc}
+.zone-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:5px}
 .zone.build .zone-label{color:var(--blue)}
-.zone.build{border-color:#3b82f620;background:#0d1625cc}
 .zone.strategy .zone-label{color:var(--green)}
-.zone.strategy{border-color:#10b98120;background:#0d1a14cc}
 .zone.research .zone-label{color:var(--purple)}
-.zone.research{border-color:#8b5cf620;background:#13101acc}
 .zone.comms .zone-label{color:var(--cyan)}
-.zone.comms{border-color:#06b6d420;background:#0b1518cc}
+.zone-label::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor}
 
 /* AGENT CARDS */
-.agent-card{
-  background:var(--bg-card);border-radius:12px;padding:16px;border:1px solid var(--border);
-  transition:border-color .3s,box-shadow .3s;cursor:default;
-}
-.agent-card:hover{border-color:var(--blue);box-shadow:0 0 20px #3b82f615}
-.agent-card.status-active{border-color:#3b82f630;animation:active-glow 3s ease-in-out infinite}
-.agent-card.status-thinking{border-color:#8b5cf630;animation:think-glow 2s ease-in-out infinite}
-.agent-card.status-researching{border-color:#10b98130}
-@keyframes active-glow{0%,100%{box-shadow:0 0 8px #3b82f615}50%{box-shadow:0 0 20px #3b82f625}}
-@keyframes think-glow{0%,100%{box-shadow:0 0 8px #8b5cf615}50%{box-shadow:0 0 20px #8b5cf630}}
-.card-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
-.avatar{font-size:2rem;line-height:1;position:relative}
+.agent{background:var(--card);border-radius:10px;padding:14px;border:1px solid var(--border);transition:border-color .3s,box-shadow .3s}
+.agent.active{border-color:#3b82f630;animation:agent-pulse 3s ease-in-out infinite}
+@keyframes agent-pulse{0%,100%{box-shadow:0 0 8px #3b82f610}50%{box-shadow:0 0 20px #3b82f625}}
+.agent-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.avatar{font-size:1.8rem;line-height:1}
 .agent-info{flex:1}
-.agent-name{font-weight:700;font-size:.95rem}
-.agent-role{font-size:.72rem;color:var(--muted);margin-top:2px}
-.status-badge{display:flex;align-items:center;gap:5px;margin-top:6px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.status-dot{width:8px;height:8px;border-radius:50%;position:relative;flex-shrink:0}
-.status-dot.active{background:var(--green);box-shadow:0 0 6px var(--green);animation:dot-pulse 2s ease-in-out infinite}
-.status-dot.thinking{background:var(--purple);animation:dot-think 1.5s ease-in-out infinite}
-.status-dot.researching{background:var(--cyan)}
-.status-dot.idle{background:var(--dim)}
-@keyframes dot-pulse{0%,100%{box-shadow:0 0 4px var(--green)}50%{box-shadow:0 0 12px var(--green),0 0 20px #10b98150}}
-@keyframes dot-think{0%,100%{box-shadow:0 0 4px var(--purple);transform:scale(1)}50%{box-shadow:0 0 10px var(--purple);transform:scale(1.3)}}
-.status-badge.active{color:var(--green)}
-.status-badge.thinking{color:var(--purple)}
-.status-badge.researching{color:var(--cyan)}
-.status-badge.idle{color:var(--dim)}
-.task-line{font-size:.78rem;color:var(--muted);font-style:italic;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.task-cursor{display:inline-block;width:2px;height:11px;background:var(--blue);animation:blink .8s step-end infinite;vertical-align:middle}
-.thinking-dots span{animation:dot-bounce .8s ease-in-out infinite}
-.thinking-dots span:nth-child(2){animation-delay:.15s}
-.thinking-dots span:nth-child(3){animation-delay:.3s}
-@keyframes dot-bounce{0%,80%,100%{opacity:.3;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
-.zzz{font-size:.7rem;color:var(--dim);animation:zzz-float 2s ease-in-out infinite}
-@keyframes zzz-float{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(-4px);opacity:1}}
-.activity-bar{display:flex;gap:2px;margin-top:8px}
-.activity-block{height:4px;flex:1;border-radius:2px;background:var(--border)}
-.activity-block.filled{background:var(--blue);opacity:.6}
-.activity-block.recent{background:var(--cyan);opacity:.9;animation:activity-pulse 1.5s ease-in-out infinite}
-@keyframes activity-pulse{0%,100%{opacity:.6}50%{opacity:1}}
-.done-count{font-size:.68rem;color:var(--dim);margin-top:6px}
+.agent-name{font-weight:700;font-size:.9rem}
+.agent-role{font-size:.7rem;color:var(--muted);margin-top:1px}
+.status-pill{display:inline-flex;align-items:center;gap:4px;margin-top:5px;font-size:.65rem;font-weight:600;text-transform:uppercase;letter-spacing:.5px;padding:2px 8px;border-radius:10px}
+.status-pill.active{background:#10b98115;color:var(--green)}
+.status-pill.idle{background:#37415115;color:var(--dim)}
+.status-dot-sm{width:5px;height:5px;border-radius:50%;background:currentColor}
+.status-dot-sm.active{animation:dot-pulse 2s ease-in-out infinite}
+@keyframes dot-pulse{0%,100%{box-shadow:0 0 3px currentColor}50%{box-shadow:0 0 8px currentColor}}
+.agent-task{font-size:.75rem;color:var(--muted);font-style:italic;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.blink{display:inline-block;width:2px;height:10px;background:var(--blue);animation:blink .8s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.act-bar{display:flex;gap:2px;margin-top:6px}
+.act-blk{flex:1;height:3px;border-radius:2px;background:var(--border)}
+.act-blk.on{background:var(--blue);opacity:.7}
+.act-blk.now{background:var(--cyan);animation:act-now 1.5s ease-in-out infinite}
+@keyframes act-now{0%,100%{opacity:.6}50%{opacity:1}}
+.done-ct{font-size:.65rem;color:var(--dim);margin-top:5px}
 
-/* WIN WALL */
-.win-wall-wrap{display:flex;flex-direction:column;gap:0}
-.wins{display:flex;flex-direction:column;gap:8px}
+/* ── WINS ── */
+.wins-panel{display:flex;flex-direction:column;gap:0}
+.wins-header{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.wins-count{background:var(--green);color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px}
+.wins-list{display:flex;flex-direction:column;gap:7px}
 .win{
-  background:var(--bg-card);border-radius:10px;padding:12px 14px;
+  background:var(--card);border-radius:10px;padding:11px 13px;
   border:1px solid var(--border);border-left:3px solid var(--green);
   display:flex;align-items:center;gap:10px;
-  animation:slide-in .4s ease both;transition:border-color .2s;
+  animation:win-in .4s ease both;transition:border-left-color .2s;
 }
 .win:hover{border-left-color:var(--cyan)}
-.win:nth-child(1){animation-delay:.05s}
-.win:nth-child(2){animation-delay:.1s}
-.win:nth-child(3){animation-delay:.15s}
-.win:nth-child(4){animation-delay:.2s}
-.win:nth-child(5){animation-delay:.25s}
-@keyframes slide-in{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
-.win-icon{font-size:1.2rem}
-.win-text{flex:1}
-.win-title{font-weight:600;font-size:.83rem}
-.win-date{font-size:.68rem;color:var(--dim)}
-.win-count{background:var(--green);color:#fff;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:4px}
+@keyframes win-in{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+.win-icon{font-size:1.1rem}
+.win-title{font-weight:600;font-size:.8rem}
+.win-date{font-size:.65rem;color:var(--dim)}
 
-/* PIPELINE */
-.pipeline{padding:0 28px 28px}
-.pipeline-cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.pipeline-col{background:var(--bg-mid);border-radius:var(--radius);padding:16px;min-height:160px;border:1px solid var(--border);border-top:3px solid transparent;transition:background .2s,border-color .2s}
-.pipeline-col[data-col=progress]{border-top-color:var(--blue)}
-.pipeline-col[data-col=next]{border-top-color:var(--yellow)}
-.pipeline-col[data-col=done]{border-top-color:var(--green)}
-.pipeline-col.drag-over{background:#1a2234;border-color:var(--blue)}
-.col-header{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.col-count{background:var(--bg-card);color:var(--dim);font-size:.68rem;padding:2px 7px;border-radius:8px}
-.task-list{display:flex;flex-direction:column;gap:8px;min-height:50px}
-.task-card{background:var(--bg-card);border-radius:10px;padding:11px 13px;border:1px solid var(--border);cursor:grab;transition:transform .15s,box-shadow .15s,opacity .15s;user-select:none}
-.task-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px #00000040;border-color:var(--blue)}
-.task-card.dragging{opacity:.4;transform:scale(.96)}
-.task-card-top{display:flex;align-items:center;gap:7px;margin-bottom:4px}
-.priority{font-size:.85rem}
-.task-title{font-weight:600;font-size:.82rem;flex:1}
-.task-assignee{font-size:.72rem;color:var(--dim)}
-.task-progress-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);animation:dot-pulse 1.5s ease-in-out infinite;flex-shrink:0}
-.done-card{animation:card-done .5s ease}
-@keyframes card-done{0%{background:var(--bg-card)}40%{background:#10b98115}100%{background:var(--bg-card)}}
+/* ── PIPELINE ── */
+.pipeline{padding:0 24px 24px}
+.pipeline-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pipe-col{background:var(--bg2);border-radius:var(--radius);padding:14px;min-height:140px;border:1px solid var(--border);border-top:3px solid transparent;transition:background .2s,border-color .2s}
+.pipe-col[data-col=progress]{border-top-color:var(--blue)}
+.pipe-col[data-col=next]{border-top-color:var(--gold)}
+.pipe-col[data-col=done]{border-top-color:var(--green)}
+.pipe-col.drag-over{background:#1a2840;border-color:var(--blue)}
+.pipe-header{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.pipe-count{background:var(--card);color:var(--dim);font-size:.65rem;padding:2px 6px;border-radius:6px}
+.task-list{display:flex;flex-direction:column;gap:7px;min-height:40px}
 
-/* RESPONSIVE */
-@media(max-width:1000px){.layout{grid-template-columns:1fr}.zones{grid-template-columns:1fr}.pipeline-cols{grid-template-columns:1fr}}
+/* TASK CARDS */
+.task{
+  background:var(--card);border-radius:9px;padding:10px 12px;border:1px solid var(--border);
+  cursor:grab;transition:transform .15s,box-shadow .15s,opacity .15s;user-select:none;
+}
+.task:hover{transform:translateY(-2px);box-shadow:0 4px 16px #00000050;border-color:var(--blue)}
+.task.dragging{opacity:.35;transform:scale(.95)}
+.task-top{display:flex;align-items:center;gap:7px;margin-bottom:3px}
+.prio{font-size:.82rem}
+.task-name{font-weight:600;font-size:.78rem;flex:1}
+.task-who{font-size:.68rem;color:var(--dim)}
+.progress-dot{width:5px;height:5px;border-radius:50%;background:var(--blue);animation:dot-pulse 1.5s ease-in-out infinite;flex-shrink:0}
+
+/* ── DONE CARDS — SPECIAL STYLE ── */
+.pipe-col[data-col=done] .task{
+  background:#0d1f12;border-color:#10b98125;
+  position:relative;overflow:hidden;
+}
+.pipe-col[data-col=done] .task::before{
+  content:'✓';position:absolute;right:10px;top:50%;transform:translateY(-50%);
+  font-size:1rem;color:#10b98130;font-weight:900;
+}
+.pipe-col[data-col=done] .task-name{color:#10b981cc}
+.done-flash{animation:done-flash .6s ease}
+@keyframes done-flash{0%{background:var(--card)}40%{background:#10b98120}100%{background:#0d1f12}}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){.main-grid{grid-template-columns:1fr}.zones{grid-template-columns:1fr}.pipeline-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
 <header>
   <div class="logo">THE <span>COMPOUND</span></div>
-  <div class="empire">
-    <div class="empire-badge" id="levelBadge">Empire Lv. 1</div>
-    <div class="xp-wrap">
-      <div class="xp-outer"><div class="xp-inner" id="xpBar" style="width:30%"></div></div>
-      <div class="xp-label" id="xpLabel">30 / 100 XP</div>
-    </div>
+  <div class="xp-section">
+    <div class="level-pill" id="lvlBadge">LV 2</div>
+    <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:40%"></div></div>
+    <div class="xp-num" id="xpNum">40/100 XP</div>
   </div>
-  <div class="clock"><div class="clock-time" id="clockTime"></div><div id="clockDate"></div></div>
+  <div class="clock"><div class="clock-time" id="ct"></div><div id="cd"></div></div>
 </header>
 
-<div class="flash" id="flash"></div>
-<div class="celebration" id="cel"><div class="cel-inner"><h2 id="celTitle">LEVEL UP!</h2><p id="celText"></p></div></div>
+<div class="streak-banner">
+  <div class="streak-stat"><span class="icon">🔥</span> Day Streak: <strong id="streakDays">6</strong></div>
+  <div class="streak-stat"><span class="icon">⚡</span> Tasks Crushed: <strong id="totalDone">0</strong></div>
+  <div class="streak-stat"><span class="icon">🏆</span> Wins Logged: <strong id="totalWins">0</strong></div>
+  <div class="streak-stat"><span class="icon">🚀</span> Empire: <strong>Level <span id="empireLevel">2</span></strong></div>
+</div>
 
-<div class="layout">
-  <div class="office-wrap">
-    <div class="office-floor">
+<div class="flash" id="flashEl"></div>
+<div class="cel" id="celEl">
+  <div class="cel-box">
+    <div class="big" id="celEmoji">🎉</div>
+    <h2 id="celTitle">LEVEL UP!</h2>
+    <p id="celText">Empire Level 3 unlocked</p>
+  </div>
+</div>
+
+<div class="main-grid">
+  <div>
+    <div class="office">
       <div class="section-title">Office Floor</div>
       <div class="zones" id="zones"></div>
     </div>
   </div>
-
   <div>
-    <div class="section-title">Win Wall <span class="win-count" id="winCount">0</span></div>
-    <div class="wins" id="wins"></div>
+    <div class="wins-header">
+      <div class="section-title" style="flex:1;margin-bottom:0">Win Wall</div>
+      <div class="wins-count" id="winsCount">0</div>
+    </div>
+    <div class="wins-list" id="winsList"></div>
   </div>
 </div>
 
 <div class="pipeline">
-  <div class="section-title" style="margin-bottom:16px">Task Pipeline</div>
-  <div class="pipeline-cols">
-    <div class="pipeline-col" id="col-progress" data-col="progress">
-      <div class="col-header" style="color:var(--blue)">🔵 In Progress <span class="col-count" id="count-progress">0</span></div>
+  <div class="section-title" style="margin-bottom:14px">Mission Pipeline</div>
+  <div class="pipeline-grid">
+    <div class="pipe-col" id="col-progress" data-col="progress">
+      <div class="pipe-header" style="color:var(--blue)">🔵 In Progress <span class="pipe-count" id="cnt-progress">0</span></div>
       <div class="task-list" id="list-progress"></div>
     </div>
-    <div class="pipeline-col" id="col-next" data-col="next">
-      <div class="col-header" style="color:var(--yellow)">⭐ Up Next <span class="col-count" id="count-next">0</span></div>
+    <div class="pipe-col" id="col-next" data-col="next">
+      <div class="pipe-header" style="color:var(--gold)">⭐ Up Next <span class="pipe-count" id="cnt-next">0</span></div>
       <div class="task-list" id="list-next"></div>
     </div>
-    <div class="pipeline-col" id="col-done" data-col="done">
-      <div class="col-header" style="color:var(--green)">✅ Done <span class="col-count" id="count-done">0</span></div>
+    <div class="pipe-col" id="col-done" data-col="done">
+      <div class="pipe-header" style="color:var(--green)">✅ Crushed It <span class="pipe-count" id="cnt-done">0</span></div>
       <div class="task-list" id="list-done"></div>
     </div>
   </div>
 </div>
 
 <script>
-const DEFAULT = {
-  level:2, xp:40,
+const DEFAULT={
+  level:2,xp:40,streak:6,
   agents:[
-    {id:'jarvis',name:'Jarvis',role:'Co-founder / AI Partner',emoji:'🌀',status:'active',task:'Installing Playwright browser automation',zone:'build',done:24},
+    {id:'jarvis',name:'Jarvis',role:'Co-founder / AI Partner',emoji:'🌀',status:'active',task:'Setting up browser automation',zone:'build',done:24},
     {id:'wan',name:'Wan',role:'Co-founder / Visionary',emoji:'🧠',status:'active',task:'Validating QuestPath idea',zone:'strategy',done:8},
   ],
   wins:[
     {title:'QuestPath landing page live',icon:'🎮',date:'Mar 26',color:'#f59e0b'},
-    {title:'Browser automation setup',icon:'🤖',date:'Mar 26',color:'#3b82f6'},
-    {title:'Discord exec approvals working',icon:'⚡',date:'Mar 25',color:'#10b981'},
-    {title:'OpenClaw updated to latest',icon:'🔄',date:'Mar 25',color:'#06b6d4'},
-    {title:'Built The Compound v2',icon:'⬆️',date:'Mar 25',color:'#3b82f6'},
-    {title:'Security lockdown',icon:'🔒',date:'Mar 25',color:'#8b5cf6'},
-    {title:'Morning briefing set up',icon:'☀️',date:'Mar 24',color:'#f59e0b'},
-    {title:'Discord voice configured',icon:'🎙️',date:'Mar 24',color:'#06b6d4'},
-    {title:'Built The Compound v1',icon:'🏭',date:'Mar 23',color:'#10b981'},
+    {title:'Browser automation incoming',icon:'🤖',date:'Mar 26',color:'#3b82f6'},
+    {title:'Discord exec approvals unlocked',icon:'⚡',date:'Mar 25',color:'#10b981'},
+    {title:'OpenClaw updated',icon:'🔄',date:'Mar 25',color:'#06b6d4'},
+    {title:'The Compound v2 shipped',icon:'⬆️',date:'Mar 25',color:'#3b82f6'},
+    {title:'Security locked down',icon:'🔒',date:'Mar 25',color:'#8b5cf6'},
+    {title:'Morning briefing live',icon:'☀️',date:'Mar 24',color:'#f59e0b'},
+    {title:'Discord voice ready',icon:'🎙️',date:'Mar 24',color:'#06b6d4'},
+    {title:'The Compound v1 shipped',icon:'🏭',date:'Mar 23',color:'#10b981'},
     {title:'Removed @ mention',icon:'🎤',date:'Mar 23',color:'#10b981'},
     {title:'Connected Discord',icon:'🔗',date:'Mar 23',color:'#10b981'},
-    {title:'Got Jarvis online',icon:'🚀',date:'Mar 20',color:'#3b82f6'},
+    {title:'Jarvis went online',icon:'🚀',date:'Mar 20',color:'#3b82f6'},
   ],
   tasks:{
     progress:[
       {id:'t1',title:'QuestPath waitlist validation',priority:'urgent',assignee:'🧠🌀'},
       {id:'t2',title:'Playwright browser automation',priority:'normal',assignee:'🌀'},
-      {id:'t3',title:'Formspree email capture setup',priority:'normal',assignee:'🌀'},
+      {id:'t3',title:'Formspree email capture',priority:'normal',assignee:'🌀'},
     ],
     next:[
       {id:'t4',title:'Post QuestPath to gaming communities',priority:'urgent',assignee:'🧠'},
-      {id:'t5',title:'QuestPath MVP build (EA FC first)',priority:'normal',assignee:'🌀'},
+      {id:'t5',title:'QuestPath MVP build (EA FC)',priority:'normal',assignee:'🌀'},
       {id:'t6',title:'Twilio phone calls',priority:'low',assignee:'🌀'},
       {id:'t7',title:'Discord voice activation',priority:'low',assignee:'🌀'},
     ],
@@ -259,168 +274,146 @@ const DEFAULT = {
       {id:'t8',title:'Discord exec approvals',priority:'normal',assignee:'🌀'},
       {id:'t9',title:'OpenClaw update',priority:'normal',assignee:'🌀'},
       {id:'t10',title:'Power settings script',priority:'normal',assignee:'🧠'},
-      {id:'t11',title:'Get Jarvis online',priority:'normal',assignee:'🌀'},
-      {id:'t12',title:'Connect Discord',priority:'normal',assignee:'🧠🌀'},
-      {id:'t13',title:'Remove @ mention',priority:'normal',assignee:'🧠'},
-      {id:'t14',title:'Build The Compound v1+v2',priority:'normal',assignee:'🌀'},
+      {id:'t11',title:'Got Jarvis online',priority:'normal',assignee:'🌀'},
+      {id:'t12',title:'Connected Discord',priority:'normal',assignee:'🧠🌀'},
+      {id:'t13',title:'Removed @ mention',priority:'normal',assignee:'🧠'},
+      {id:'t14',title:'Built The Compound v1+v2',priority:'normal',assignee:'🌀'},
       {id:'t15',title:'Security lockdown',priority:'normal',assignee:'🌀'},
-      {id:'t16',title:'Morning briefing',priority:'normal',assignee:'🌀'},
+      {id:'t16',title:'Morning briefing setup',priority:'normal',assignee:'🌀'},
     ]
   }
 };
 
-function load(){try{const s=localStorage.getItem('compound_v2');if(s)return JSON.parse(s);}catch(e){}return JSON.parse(JSON.stringify(DEFAULT));}
-function save(){localStorage.setItem('compound_v2',JSON.stringify(state));}
+function load(){try{const s=localStorage.getItem('compound_v3');if(s)return JSON.parse(s);}catch(e){}return JSON.parse(JSON.stringify(DEFAULT));}
+function save(){localStorage.setItem('compound_v3',JSON.stringify(state));}
 let state=load();
 
 // Clock
 function tick(){
   const n=new Date();
-  document.getElementById('clockTime').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
-  document.getElementById('clockDate').textContent=n.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});
+  document.getElementById('ct').textContent=n.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('cd').textContent=n.toLocaleDateString([],{weekday:'short',month:'short',day:'numeric'});
 }
 tick();setInterval(tick,1000);
 
 // XP
 function renderXP(){
-  document.getElementById('levelBadge').textContent=`Empire Lv. ${state.level}`;
-  document.getElementById('xpBar').style.width=state.xp+'%';
-  document.getElementById('xpLabel').textContent=`${state.xp} / 100 XP`;
+  document.getElementById('lvlBadge').textContent=`LV ${state.level}`;
+  document.getElementById('xpFill').style.width=state.xp+'%';
+  document.getElementById('xpNum').textContent=`${state.xp}/100 XP`;
+  document.getElementById('empireLevel').textContent=state.level;
+  document.getElementById('streakDays').textContent=state.streak||6;
+  document.getElementById('totalDone').textContent=state.tasks.done.length;
+  document.getElementById('totalWins').textContent=state.wins.length;
+  document.getElementById('winsCount').textContent=state.wins.length;
 }
 function addXP(n){
   state.xp+=n;
-  const bar=document.getElementById('xpBar');
-  bar.classList.remove('pulse');void bar.offsetWidth;bar.classList.add('pulse');
+  const f=document.getElementById('xpFill');
+  f.classList.remove('pulse');void f.offsetWidth;f.classList.add('pulse');
   if(state.xp>=100){
     state.level++;state.xp-=100;renderXP();
-    const c=document.getElementById('cel');
-    document.getElementById('celText').textContent=`Empire Level ${state.level} unlocked`;
-    c.classList.add('show');setTimeout(()=>c.classList.remove('show'),2500);
+    showCel('🏆','LEVEL UP!',`Empire Level ${state.level} unlocked! You're unstoppable.`);
   } else renderXP();
   save();
 }
-function flash(){
-  const f=document.getElementById('flash');
-  f.classList.remove('go');void f.offsetWidth;f.classList.add('go');
+function showFlash(){const f=document.getElementById('flashEl');f.classList.remove('go');void f.offsetWidth;f.classList.add('go');}
+function showCel(emoji,title,text){
+  document.getElementById('celEmoji').textContent=emoji;
+  document.getElementById('celTitle').textContent=title;
+  document.getElementById('celText').textContent=text;
+  const c=document.getElementById('celEl');c.classList.add('show');
+  setTimeout(()=>c.classList.remove('show'),3000);
 }
+document.getElementById('celEl').addEventListener('click',e=>{if(e.target===e.currentTarget)e.currentTarget.classList.remove('show');});
 
-// Status helpers
-function statusLabel(s){return{active:'● Active',thinking:'◉ Thinking',researching:'🔍 Researching',idle:'◌ Idle'}[s]||s;}
-function taskHTML(agent){
-  if(agent.status==='idle') return `<div class="task-line"><span class="zzz">💤 zZz...</span></div>`;
-  if(agent.status==='thinking') return `<div class="task-line">${agent.task} <span class="thinking-dots"><span>.</span><span>.</span><span>.</span></span></div>`;
-  if(agent.status==='active') return `<div class="task-line">${agent.task} <span class="task-cursor"></span></div>`;
-  return `<div class="task-line">${agent.task}</div>`;
-}
-function activityBar(n){
-  const total=8;let h='<div class="activity-bar">';
-  for(let i=0;i<total;i++){
-    const cl=i<n-1?'filled':i===n-1?'recent':'';
-    h+=`<div class="activity-block ${cl}"></div>`;
-  }
-  return h+'</div>';
-}
-
-// Zones config
-const ZONES={
-  build:{label:'Build Zone',cls:'build'},
-  strategy:{label:'Strategy Room',cls:'strategy'},
-  research:{label:'Research Lab',cls:'research'},
-  comms:{label:'Comms HQ',cls:'comms'},
-};
-
-// Render office
+// Office
+const ZONES={build:{label:'Build Zone',cls:'build'},strategy:{label:'Strategy Room',cls:'strategy'},research:{label:'Research Lab',cls:'research'},comms:{label:'Comms HQ',cls:'comms'}};
 function renderOffice(){
-  const container=document.getElementById('zones');
-  // Group agents by zone
-  const byZone={};
-  state.agents.forEach(a=>{(byZone[a.zone]=byZone[a.zone]||[]).push(a);});
-  // Show occupied zones + empty placeholder zones
-  const allZones=['build','strategy','research','comms'];
-  container.innerHTML=allZones.map(zk=>{
-    const z=ZONES[zk];
-    const agents=(byZone[zk]||[]);
+  const byZone={};state.agents.forEach(a=>{(byZone[a.zone]=byZone[a.zone]||[]).push(a);});
+  document.getElementById('zones').innerHTML=['build','strategy','research','comms'].map(zk=>{
+    const z=ZONES[zk],agents=byZone[zk]||[];
     return `<div class="zone ${z.cls}">
       <div class="zone-label">${z.label}</div>
       ${agents.length?agents.map(a=>`
-        <div class="agent-card status-${a.status}">
-          <div class="card-top">
+        <div class="agent ${a.status}">
+          <div class="agent-top">
             <div class="avatar">${a.emoji}</div>
             <div class="agent-info">
               <div class="agent-name">${a.name}</div>
               <div class="agent-role">${a.role}</div>
-              <div class="status-badge ${a.status}"><div class="status-dot ${a.status}"></div>${statusLabel(a.status)}</div>
+              <div class="status-pill ${a.status}"><div class="status-dot-sm ${a.status}"></div>${a.status==='active'?'Active':'Idle'}</div>
             </div>
           </div>
-          ${taskHTML(a)}
-          ${activityBar(Math.min(a.done,8))}
-          <div class="done-count">✅ ${a.done} tasks completed</div>
+          <div class="agent-task">${a.task}${a.status==='active'?'<span class="blink"></span>':''}</div>
+          <div class="act-bar">${Array.from({length:8},(_,i)=>`<div class="act-blk ${i<a.done-1?'on':i===Math.min(a.done-1,7)?'now':''}"></div>`).join('')}</div>
+          <div class="done-ct">✅ ${a.done} missions completed</div>
         </div>
-      `).join(''):`<div style="color:var(--dim);font-size:.75rem;padding:8px">Empty</div>`}
+      `).join(''):`<div style="color:var(--dim);font-size:.72rem;padding:6px">Empty</div>`}
     </div>`;
   }).join('');
 }
 
-// Render wins
+// Wins
 function renderWins(){
-  document.getElementById('wins').innerHTML=state.wins.map(w=>`
-    <div class="win" style="border-left-color:${w.color||'var(--green)'}">
+  document.getElementById('winsList').innerHTML=state.wins.map((w,i)=>`
+    <div class="win" style="border-left-color:${w.color||'var(--green)'};animation-delay:${i*0.05}s">
       <div class="win-icon">${w.icon}</div>
-      <div class="win-text"><div class="win-title">${w.title}</div><div class="win-date">${w.date}</div></div>
+      <div><div class="win-title">${w.title}</div><div class="win-date">${w.date}</div></div>
     </div>
   `).join('');
-  document.getElementById('winCount').textContent=state.wins.length;
+  document.getElementById('winsCount').textContent=state.wins.length;
+  document.getElementById('totalWins').textContent=state.wins.length;
 }
 
 // Pipeline
 const PRIO={urgent:'💎',normal:'⭐',low:'🔵'};
 let dragId=null,dragSrc=null;
-
 function renderPipeline(){
   ['progress','next','done'].forEach(col=>{
     document.getElementById('list-'+col).innerHTML=state.tasks[col].map(t=>`
-      <div class="task-card" draggable="true" data-id="${t.id}" data-col="${col}">
-        <div class="task-card-top">
-          ${col==='progress'?'<div class="task-progress-dot"></div>':''}
-          <span class="priority">${PRIO[t.priority]||'⭐'}</span>
-          <span class="task-title">${t.title}</span>
+      <div class="task" draggable="true" data-id="${t.id}" data-col="${col}">
+        <div class="task-top">
+          ${col==='progress'?'<div class="progress-dot"></div>':''}
+          <span class="prio">${PRIO[t.priority]||'⭐'}</span>
+          <span class="task-name">${t.title}</span>
         </div>
-        <div class="task-assignee">${t.assignee}</div>
+        <div class="task-who">${t.assignee}</div>
       </div>
     `).join('');
-    document.getElementById('count-'+col).textContent=state.tasks[col].length;
+    document.getElementById('cnt-'+col).textContent=state.tasks[col].length;
   });
+  document.getElementById('totalDone').textContent=state.tasks.done.length;
   bindDrag();
 }
-
 function bindDrag(){
-  document.querySelectorAll('.task-card').forEach(c=>{
+  document.querySelectorAll('.task').forEach(c=>{
     c.addEventListener('dragstart',e=>{dragId=c.dataset.id;dragSrc=c.dataset.col;c.classList.add('dragging');e.dataTransfer.effectAllowed='move';});
-    c.addEventListener('dragend',()=>{c.classList.remove('dragging');dragId=dragSrc=null;document.querySelectorAll('.pipeline-col').forEach(x=>x.classList.remove('drag-over'));});
+    c.addEventListener('dragend',()=>{c.classList.remove('dragging');dragId=dragSrc=null;document.querySelectorAll('.pipe-col').forEach(x=>x.classList.remove('drag-over'));});
   });
-  document.querySelectorAll('.pipeline-col').forEach(col=>{
+  document.querySelectorAll('.pipe-col').forEach(col=>{
     col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
     col.addEventListener('dragleave',()=>col.classList.remove('drag-over'));
     col.addEventListener('drop',e=>{
       e.preventDefault();col.classList.remove('drag-over');
-      const tc=col.dataset.col;
-      if(!dragId||tc===dragSrc)return;
-      const idx=state.tasks[dragSrc].findIndex(t=>t.id===dragId);
-      if(idx<0)return;
+      const tc=col.dataset.col;if(!dragId||tc===dragSrc)return;
+      const idx=state.tasks[dragSrc].findIndex(t=>t.id===dragId);if(idx<0)return;
       const [task]=state.tasks[dragSrc].splice(idx,1);
       state.tasks[tc].push(task);
       if(tc==='done'&&dragSrc!=='done'){
-        addXP(10);flash();
+        addXP(10);showFlash();
         const now=new Date();
         state.wins.unshift({title:task.title,icon:'🏆',date:now.toLocaleDateString([],{month:'short',day:'numeric'}),color:'var(--green)'});
         renderWins();
+        // Hype message
+        const hypes=['CRUSHED IT! 🔥','MISSION COMPLETE! 🎯','GET IN! 💪','LET\'S GO! 🚀','NAILED IT! ⚡'];
+        showCel('🎯',hypes[Math.floor(Math.random()*hypes.length)],`"${task.title}" is done. Keep the momentum.`);
       }
       save();renderPipeline();
     });
   });
 }
 
-// Init
 renderXP();renderOffice();renderWins();renderPipeline();
 </script>
 </body>
